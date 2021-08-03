@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,6 +15,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -79,8 +80,31 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 const Home = () => {
+  const nm = JSON.parse(localStorage.getItem('user'));
+
+  const [dataPacientes, setDataPacientes] = useState({});
+
+    useEffect(() => {
+      const data = {
+        doctor: nm.id_doctor,
+      };
+      axios.post("http://127.0.0.1:8000/api/consultadoctor",data)
+        .then(response => {
+          console.log("consulta")
+            console.log(response.data);
+            setDataPacientes(JSON.parse(response.data));
+            console.log(typeof(response.data))
+        });
+
+    }, [])
     const classes = useStyles();
-    const name = localStorage.getItem('user');
+    //let name = localStorage.getItem('user');
+    //const nm = JSON.parse(localStorage.getItem('user'));
+    //console.log(nm)
+    //const name = props.usuario;
+    //console.log(name.nombres);
+    //console.log(typeof(nm))
+    //console.log(usuario)
     
     const [tipoPaciente, setTipoPaciente] = React.useState('');
     const [tipoConsulta, settipoConsulta] = React.useState('');
@@ -96,7 +120,7 @@ const Home = () => {
         <Card className={classes.card} >
             <CardContent >
             <Typography variant="h6" className={classes.title}>
-                Bienvenido Dr. {name}
+                Bienvenido Dr. {nm.nombres} {nm.ap_pat}
                 <Link to="/logout">
                 <Button variant="contained" className={classes.btn}  endIcon={<ExitToAppIcon />}>Salir</Button>
                 </Link>
@@ -196,25 +220,27 @@ const Home = () => {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>Nombre paciente</TableCell>
+            <TableCell align="right">Tipo paciente</TableCell>
+            <TableCell align="right">Fecha atención</TableCell>
+            <TableCell align="right">Monto</TableCell>
+            <TableCell align="right">Estado</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
+        {dataPacientes.map((row) => (
+          <>
+          <TableRow>
+            <TableCell component="th" scope="row">
+              {row.paciente}
+            </TableCell>
+            <TableCell align="right">{row.tipo_paciente}</TableCell>
+            <TableCell align="right">{row.fecha_atencion}</TableCell>
+            <TableCell align="right">{row.monto}</TableCell>
+            <TableCell align="right">{row.estado}</TableCell>
+          </TableRow>
+          </>
+        ))}        
         </TableBody>
       </Table>
     </TableContainer>

@@ -8,6 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { useHistory, useParams } from "react-router-dom";
 import axios from 'axios';
+import Home  from './Home';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles({
     root: {
@@ -35,6 +37,8 @@ const useStyles = makeStyles({
 const Login = () => {
     const classes = useStyles();
 
+    const [usuario, setUsuario] = useState();
+
     const [dataLogin, setDataLogin] = useState({
         userLogin: "",
         passLogin: "",
@@ -56,11 +60,17 @@ const Login = () => {
 
         axios.post("http://127.0.0.1:8000/api/login",dataLogin)
         .then(response => {
-            console.log(response.data);
-            localStorage.setItem("user",response.data);
+            //console.log(response.data);
+            localStorage.setItem("user",JSON.stringify(response.data));
+            //console.log(typeof(response.data));
+            //const rsp = response.data
+            //setUsuario(response.data);
+            //setUsuario(rsp);
+            //console.log(usuario);
+            //<Home usuario={response.data} />
             history.push("/Home");
+            //<Redirect to="/Home"></Redirect>
         });
-
     };
 
     return (
