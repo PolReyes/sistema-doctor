@@ -1,10 +1,13 @@
-import { Grid, Paper } from '@material-ui/core'
-import React from 'react'
+import { Grid, Paper } from '@material-ui/core';
+import React from 'react';
+import { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { useHistory, useParams } from "react-router-dom";
+import axios from 'axios';
 
 const useStyles = makeStyles({
     root: {
@@ -32,8 +35,33 @@ const useStyles = makeStyles({
 const Login = () => {
     const classes = useStyles();
 
+    const [dataLogin, setDataLogin] = useState({
+        userLogin: "",
+        passLogin: "",
+    });
 
+    let history = useHistory(); 
+    
+    const handleInput = (event) => {
+        const { value, name } = event.target;
+        
+        setDataLogin({
+            ...dataLogin,
+            [name]: value,
+        });
+    };
+    
+    const handleSubmit = () => {
+        //const { userLogin, passLogin } = dataLogin;
 
+        axios.post("http://127.0.0.1:8000/api/login",dataLogin)
+        .then(response => {
+            console.log(response.data);
+            localStorage.setItem("user",response.data);
+            history.push("/Home");
+        });
+
+    };
 
     return (
         <>
@@ -45,21 +73,16 @@ const Login = () => {
                     </Typography>
                     <form noValidate autoComplete="off">
                         <div>
-                        <TextField className={classes.field}  label="Código"  type="text" name="codigoLogin"/>
+                        <TextField className={classes.field}  label="Código"  type="text" name="userLogin" required onChange={handleInput} />
                         </div>
                         <div>
-                        <TextField className={classes.field}  label="Contraseña"  type="password" name="passLogin" />
+                        <TextField className={classes.field}  label="Contraseña"  type="password" name="passLogin" required onChange={handleInput} />
                         </div>
-                        <Button variant="contained" className={classes.btn} endIcon={<ArrowForwardIcon />}>Iniciar Sesión</Button>
-                        
-                        
-                            
+                        <Button variant="contained" className={classes.btn} endIcon={<ArrowForwardIcon />} onClick={handleSubmit} >Iniciar Sesión</Button>
                     </form> 
-                  </Paper>
-                  
+                  </Paper>    
               </Grid>
             </Grid>
-
         </>
     )
 }
