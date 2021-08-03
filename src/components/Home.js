@@ -14,6 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { Link } from 'react-router-dom';
+
 
 const useStyles = makeStyles({
   table: {
@@ -51,6 +53,7 @@ const rows = [
 ];
 const Home = () => {
     const classes = useStyles();
+    const name = localStorage.getItem('user');
   const [age, setAge] = React.useState('');
 
   const handleChange = (event) => {
@@ -61,8 +64,10 @@ const Home = () => {
         <Card className={classes.card} >
             <CardContent >
             <Typography variant="h6" className={classes.title}>
-                Nombre del Doctor
+                Bienvenido Dr. {name}
+                <Link to="/logout">
                 <Button variant="contained" className={classes.btn}  endIcon={<ExitToAppIcon />}>Salir</Button>
+                </Link>
             </Typography>
            
             </CardContent>
