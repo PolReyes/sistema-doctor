@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 650,
+  },
+  table1: {
+    minWidth: 250,
   },
   card: {
     backgroundColor:'#0033A0',
@@ -38,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
     textAlign:'left',
     color:'#fff'
   },
+  title1:{
+    fontWeight:'bold',
+    //textAlign:'left',
+    color:'#fff'
+  },
   title2:{
     textAlign:'left',
     color:'#0033A0',
@@ -47,22 +55,33 @@ const useStyles = makeStyles((theme) => ({
     color:'#fff',
     float:'right'
   },
+  btn2:{
+    backgroundColor:'#00E1CD',
+    color:'#fff',
+  },
   formControl: {
     float:'left',
-    minWidth: 320,
-    margin: '20px',
+    width: '90%',
+    //minWidth: 320,
+    margin: '10px',
     //flexGrow:1
   },
   selectEmpty: {
   },
   label: {
     float:'left',
-    marginLeft: '20px',
+    //marginTop:'5px',
+    marginLeft: '10px',
+    color:'#0033A0',
+    fontWeight:'bold'
   },
   textField: {
     float:'left',
-    minWidth: 320,
-    marginLeft: '20px',
+    width: '90%',
+    //minWidth: 320,
+    marginLeft: '10px',
+    marginTop: '15px',
+    marginBottom: '20px'
   }
 }));
 
@@ -71,11 +90,8 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Particular', 'Cirujía', 6.0),
+  createData('Seguro', 'Cirujía', 9.0),
 ];
 const Home = () => {
   const nm = JSON.parse(localStorage.getItem('user'));
@@ -104,6 +120,7 @@ const Home = () => {
     
     const [tipoPaciente, setTipoPaciente] = React.useState('');
     const [tipoConsulta, settipoConsulta] = React.useState('');
+    const [tipoEstado, settipoEstado] = React.useState('');
 
     const [dataFiltros, setDataFiltros] = useState({
       tipoPac: "",
@@ -121,6 +138,9 @@ const Home = () => {
   const handleChangeConsulta = (event) => {
     settipoConsulta(event.target.value);
   };
+  const handleChangeEstado = (event) => {
+    settipoEstado(event.target.value);
+  };
   const handleSubmit = () => {
     //const { userLogin, passLogin } = dataLogin;
 
@@ -132,6 +152,7 @@ const Home = () => {
 };
     return (
         <>
+        
         <Card className={classes.card} >
             <CardContent >
             <Typography variant="h6" className={classes.title}>
@@ -142,29 +163,101 @@ const Home = () => {
             </Typography>
            
             </CardContent>
-            <Card className={classes.cardInfo}>
-            <CardContent >
-            <Typography variant="h6">
-                02 de Julio del 2021 Resumen del mes
+            <Typography variant="h6" className={classes.title1}>
+                04 de Julio 2021
             </Typography>
-            <Typography variant="h6">
-                total de pacientes: 50
+           <Typography variant="h6" className={classes.title1}>
+                MONTOS ACUMULADOS PENDIENTES DE PAGO
+                <hr></hr>
             </Typography>
-            {
-          dataPacientes?
-        dataPacientes.map((row) => (
-          <>
-          <h5 key={row.id_doctor}>{row.paciente} - {row.tipo_paciente} - {row.fecha_atencion} - {row.monto} - {row.estado}</h5>
-          
-           
-              
             
-          
-          </>
-        )): "Cargando..."
-      }
-            </CardContent>
-            </Card>
+            <Grid container >
+              <Grid item md={4} xs={12}>
+              <Box  p={2} boxShadow={1} className={classes.cardInfo} >
+              <h3>Citas</h3>
+                  <hr></hr>
+                  <TableContainer >
+      <Table className={classes.table1}  size="small" aria-label="simple table">
+        <TableHead>
+          <TableRow>
+          <TableCell>Tipo Paciente</TableCell>
+            <TableCell>Cantidad</TableCell>
+            <TableCell>Monto</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow key={row.name}>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>10</TableCell>
+              <TableCell >S/.{row.fat}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer> 
+    <h4>Monto Acumulado: S/.15</h4>
+    <h4>Estado: Pendiente</h4> 
+              </Box>
+              </Grid>
+              <Grid item md={5} xs={12}>
+              <Box  p={2} boxShadow={1} className={classes.cardInfo} >
+                  <h3>Procedimientos</h3>
+                  <hr></hr>
+                  <TableContainer >
+      <Table className={classes.table1}  size="small" aria-label="simple table">
+        <TableHead>
+          <TableRow>
+          <TableCell>Tipo Paciente</TableCell>
+          <TableCell>Tipo Procedimiento</TableCell>
+            <TableCell>Cantidad</TableCell>
+            <TableCell>Monto</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow key={row.name}>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.calories}</TableCell>
+              <TableCell>10</TableCell>
+              <TableCell >S/.{row.fat}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer> 
+    <h4>Monto Acumulado: S/.15</h4>
+    <h4>Estado: Pendiente</h4> 
+                </Box>
+              </Grid>
+              <Grid item md={3} xs={12}>
+              <Box  p={2} boxShadow={1} className={classes.cardInfo} >
+                  <h3>Bonos</h3>
+                  <hr></hr>
+                  <TableContainer >
+      <Table className={classes.table1}  size="small" aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Cantidad</TableCell>
+            <TableCell>Monto</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow key={row.name}>
+              <TableCell>10</TableCell>
+              <TableCell >S/.{row.fat}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer> 
+    <h4>Monto Acumulado: S/.15</h4>
+    <h4>Estado: Pendiente</h4>
+                </Box>
+              </Grid>
+        </Grid>
+       
             
         
         </Card>
@@ -173,7 +266,7 @@ const Home = () => {
               <Grid item md={4} xs={12}>
               <Box m={2} p={2} boxShadow={1} >
               <Typography variant="h6" className={classes.title2}>
-              Buscar por filtros
+              Búsqueda de atenciones
             </Typography>
             <form>
             <div className={classes.root}>
@@ -198,37 +291,50 @@ const Home = () => {
     </div>
     <div className={classes.root}>
                   <FormControl className={classes.formControl}>
-                  <InputLabel id="label-tipo-consulta">Tipo de consulta</InputLabel>
+                  <InputLabel id="label-tipo-consulta">Tipo de pago</InputLabel>
                   <Select
                   labelId="label-tipo-consulta"
                   id="tipo-consulta"
                   value={tipoConsulta}
                   onChange={handleChangeConsulta}
                   >
-                  <MenuItem value={'Cita'}>Cita</MenuItem>
-                  <MenuItem value={'Procedimiento'}>Procedimiento</MenuItem>
-                  <MenuItem value={'Bonos'}>Bonos</MenuItem>
+                  <MenuItem value={'Cita'}>Citas atendidas</MenuItem>
+                  <MenuItem value={'Procedimiento'}>Procedimientos</MenuItem>
+                  <MenuItem value={'Bonos'}>Bonos de cumplimiento</MenuItem>
+                  </Select>
+                  </FormControl>
+              </div>
+              <div className={classes.root}>
+                  <FormControl className={classes.formControl}>
+                  <InputLabel id="label-tipo-estado">Estado</InputLabel>
+                  <Select
+                  labelId="label-tipo-estado"
+                  id="tipo-estado"
+                  value={tipoEstado}
+                  onChange={handleChangeEstado}
+                  >
+                  <MenuItem value={'Pendiente'}>Pendiente</MenuItem>
+                  <MenuItem value={'Pagado'}>Pagado</MenuItem>
                   </Select>
                   </FormControl>
               </div>
               <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-        <InputLabel className={classes.label}>Fecha</InputLabel>
-        </Grid>
-        <Grid item xs={12}>
+        <InputLabel className={classes.label}>Rango de fechas:</InputLabel><br></br>
+        <TextField   className={classes.textField} type="date" name=""  /><br></br>
         
-          <TextField   className={classes.textField} type="date" name=""  />
+          <TextField   className={classes.textField} type="date" name=""  /><br></br>
         </Grid>
       </Grid>
     </div>
-     <Button variant="contained"  onClick={handleSubmit}>Buscar</Button>
+     <Button variant="contained"  onClick={handleSubmit}  className={classes.btn2}  endIcon={<SearchIcon />}>Buscar</Button>
             </form>
               </Box>
               </Grid>
               <Grid item md={8} xs={12}>
                 <Box m={2} p={3} boxShadow={1}>
-                  <h3>Vista general</h3>
+                  <h3>Reporte de servicios brindados</h3>
                   <hr></hr>
                   <TableContainer >
       <Table className={classes.table} aria-label="simple table">

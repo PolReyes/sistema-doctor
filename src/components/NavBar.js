@@ -1,6 +1,6 @@
 import React from 'react'
 import {AppBar, Toolbar, makeStyles } from '@material-ui/core';
-import logo from '../logo-clinica.png'
+import logo from '../RpaLatam.png'
 
 const useStyles = makeStyles(theme=>({
     offset: theme.mixins.toolbar,
