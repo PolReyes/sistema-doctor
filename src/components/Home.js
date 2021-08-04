@@ -6,12 +6,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import { Button, Card, CardContent, Grid, TextField, Typography, Box } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Link } from 'react-router-dom';
@@ -81,22 +79,20 @@ const rows = [
 ];
 const Home = () => {
   const nm = JSON.parse(localStorage.getItem('user'));
-
-  const [dataPacientes, setDataPacientes] = useState({});
+  const [dataPacientes, setDataPacientes] = useState([]);
 
     useEffect(() => {
-      const data = {
-        doctor: nm.id_doctor,
-      };
-      axios.post("http://127.0.0.1:8000/api/consultadoctor",data)
-        .then(response => {
-          console.log("consulta")
-            console.log(response.data);
-            setDataPacientes(JSON.parse(response.data));
-            console.log(typeof(response.data))
-        });
+      getConsultas()
+    }, []);
 
-    }, [])
+    const getConsultas = async () => {
+      const res = await axios.get(`http://127.0.0.1:8000/api/listar?doctor=${nm.id_doctor}`)
+      setDataPacientes(res.data)
+      console.log(res)
+    }
+
+
+
     const classes = useStyles();
     //let name = localStorage.getItem('user');
     //const nm = JSON.parse(localStorage.getItem('user'));
@@ -109,12 +105,31 @@ const Home = () => {
     const [tipoPaciente, setTipoPaciente] = React.useState('');
     const [tipoConsulta, settipoConsulta] = React.useState('');
 
+    const [dataFiltros, setDataFiltros] = useState({
+      tipoPac: "",
+  });
+  
   const handleChangePaciente = (event) => {
     setTipoPaciente(event.target.value);
+    const { value, name } = event.target;
+        
+    setDataFiltros({
+            ...dataFiltros,
+            [name]: value,
+        });
   };
   const handleChangeConsulta = (event) => {
     settipoConsulta(event.target.value);
   };
+  const handleSubmit = () => {
+    //const { userLogin, passLogin } = dataLogin;
+
+    axios.get(`http://127.0.0.1:8000/api/filtros?doctor=${nm.id_doctor}&&tipoPac=${dataFiltros.tipoPac}`)
+    .then(response => {
+      setDataPacientes(response.data)
+      console.log(response.data)
+    });
+};
     return (
         <>
         <Card className={classes.card} >
@@ -135,7 +150,19 @@ const Home = () => {
             <Typography variant="h6">
                 total de pacientes: 50
             </Typography>
+            {
+          dataPacientes?
+        dataPacientes.map((row) => (
+          <>
+          <h5 key={row.id_doctor}>{row.paciente} - {row.tipo_paciente} - {row.fecha_atencion} - {row.monto} - {row.estado}</h5>
           
+           
+              
+            
+          
+          </>
+        )): "Cargando..."
+      }
             </CardContent>
             </Card>
             
@@ -156,9 +183,11 @@ const Home = () => {
                   <InputLabel id="label-tipo-paciente">Tipo de paciente</InputLabel>
                   <Select
                   labelId="label-tipo-paciente"
-                  id="tipo-pacinte"
+                  id="tipo-paciente"
+                  name="tipoPac"
                   value={tipoPaciente}
                   onChange={handleChangePaciente}
+                  required
                   >
                   <MenuItem value={'Seguro'}>Seguro</MenuItem>
                   <MenuItem value={'Particular'}>Particular</MenuItem>
@@ -177,7 +206,7 @@ const Home = () => {
                   onChange={handleChangeConsulta}
                   >
                   <MenuItem value={'Cita'}>Cita</MenuItem>
-                  <MenuItem value={'Procedimiento'}>Cirujía/Otros</MenuItem>
+                  <MenuItem value={'Procedimiento'}>Procedimiento</MenuItem>
                   <MenuItem value={'Bonos'}>Bonos</MenuItem>
                   </Select>
                   </FormControl>
@@ -193,22 +222,7 @@ const Home = () => {
         </Grid>
       </Grid>
     </div>
-    <div className={classes.root}>
-                  <FormControl className={classes.formControl}>
-                  <InputLabel id="label-tipo-consulta">Seleccionar Mes</InputLabel>
-                  <Select
-                  labelId="label-tipo-consulta"
-                  id="tipo-consulta"
-                  value={tipoConsulta}
-                  onChange={handleChangeConsulta}
-                  >
-                  <MenuItem value={'Cita'}>Cita</MenuItem>
-                  <MenuItem value={'Procedimiento'}>Cirujía/Otros</MenuItem>
-                  <MenuItem value={'Bonos'}>Bonos</MenuItem>
-                  </Select>
-                  </FormControl>
-              </div>
-     <Button variant="contained" >Buscar</Button>
+     <Button variant="contained"  onClick={handleSubmit}>Buscar</Button>
             </form>
               </Box>
               </Grid>
@@ -228,9 +242,11 @@ const Home = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-        {dataPacientes.map((row) => (
+        {
+          dataPacientes?
+        dataPacientes.map((row,index) => (
           <>
-          <TableRow>
+           <TableRow key={index}>
             <TableCell component="th" scope="row">
               {row.paciente}
             </TableCell>
@@ -239,8 +255,11 @@ const Home = () => {
             <TableCell align="right">{row.monto}</TableCell>
             <TableCell align="right">{row.estado}</TableCell>
           </TableRow>
+            
+          
           </>
-        ))}        
+        )): "Cargando..."
+      }       
         </TableBody>
       </Table>
     </TableContainer>

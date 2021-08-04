@@ -1,15 +1,13 @@
 import { Grid, Paper } from '@material-ui/core';
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { useHistory, useParams } from "react-router-dom";
-import axios from 'axios';
-import Home  from './Home';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+import axios from 'axios';;
 
 const useStyles = makeStyles({
     root: {
@@ -37,7 +35,7 @@ const useStyles = makeStyles({
 const Login = () => {
     const classes = useStyles();
 
-    const [usuario, setUsuario] = useState();
+    //const [usuario, setUsuario] = useState();
 
     const [dataLogin, setDataLogin] = useState({
         userLogin: "",
