@@ -97,17 +97,15 @@ const Home = () => {
   const nm = JSON.parse(localStorage.getItem('user'));
   const [dataPacientes, setDataPacientes] = useState([]);
 
+  const getConsultas = async () => {
+    const res = await axios.get(`http://127.0.0.1:8000/api/listar?doctor=${nm.id_doctor}`)
+    setDataPacientes(res.data)
+    console.log(res)
+  }
+
     useEffect(() => {
-      getConsultas()
+      getConsultas();
     }, []);
-
-    const getConsultas = async () => {
-      const res = await axios.get(`http://127.0.0.1:8000/api/listar?doctor=${nm.id_doctor}`)
-      setDataPacientes(res.data)
-      console.log(res)
-    }
-
-
 
     const classes = useStyles();
     //let name = localStorage.getItem('user');
@@ -121,6 +119,8 @@ const Home = () => {
     const [tipoPaciente, setTipoPaciente] = React.useState('');
     const [tipoConsulta, settipoConsulta] = React.useState('');
     const [tipoEstado, settipoEstado] = React.useState('');
+    const [finicio, setFinicio] = React.useState('');
+    const [ffin, setFfin] = React.useState('');
 
     const [dataFiltros, setDataFiltros] = useState({
       tipoPac: "",
@@ -137,14 +137,48 @@ const Home = () => {
   };
   const handleChangeConsulta = (event) => {
     settipoConsulta(event.target.value);
+    const { value, name } = event.target;
+        
+    setDataFiltros({
+            ...dataFiltros,
+            [name]: value,
+        });
   };
   const handleChangeEstado = (event) => {
     settipoEstado(event.target.value);
+    const { value, name } = event.target;
+        
+    setDataFiltros({
+            ...dataFiltros,
+            [name]: value,
+        });
   };
+
+  const handleChangeFinicio = (event) => {
+    setFinicio(event.target.value);
+    const { value, name } = event.target;
+        
+    setDataFiltros({
+            ...dataFiltros,
+            [name]: value,
+        });
+  };
+
+  const handleChangeFfin = (event) => {
+    setFfin(event.target.value);
+    const { value, name } = event.target;
+        
+    setDataFiltros({
+            ...dataFiltros,
+            [name]: value,
+        });
+  };
+
   const handleSubmit = () => {
     //const { userLogin, passLogin } = dataLogin;
 
-    axios.get(`http://127.0.0.1:8000/api/filtros?doctor=${nm.id_doctor}&&tipoPac=${dataFiltros.tipoPac}`)
+    
+    axios.get(`http://127.0.0.1:8000/api/filtros?doctor=${nm.id_doctor}&tipoPac=${dataFiltros.tipoPac ? dataFiltros.tipoPac : ''}&tipoCons=${dataFiltros.tipoCons? dataFiltros.tipoCons : ''}&tipoEst=${dataFiltros.tipoEst ? dataFiltros.tipoEst : ''}&finicio=${dataFiltros.finicio ? dataFiltros.finicio : ''}&ffin=${dataFiltros.ffin ? dataFiltros.ffin : ''}`)
     .then(response => {
       setDataPacientes(response.data)
       console.log(response.data)
@@ -282,8 +316,9 @@ const Home = () => {
                   onChange={handleChangePaciente}
                   required
                   >
-                  <MenuItem value={'Seguro'}>Seguro</MenuItem>
-                  <MenuItem value={'Particular'}>Particular</MenuItem>
+                  <MenuItem value={''}>Todos</MenuItem>
+                  <MenuItem value={'seguro'}>Seguro</MenuItem>
+                  <MenuItem value={'particular'}>Particular</MenuItem>
                   </Select>
                   </FormControl>
         </Grid>
@@ -295,9 +330,11 @@ const Home = () => {
                   <Select
                   labelId="label-tipo-consulta"
                   id="tipo-consulta"
+                  name="tipoCons"
                   value={tipoConsulta}
                   onChange={handleChangeConsulta}
                   >
+                  <MenuItem value={''}>Todos</MenuItem>
                   <MenuItem value={'Cita'}>Citas atendidas</MenuItem>
                   <MenuItem value={'Procedimiento'}>Procedimientos</MenuItem>
                   <MenuItem value={'Bonos'}>Bonos de cumplimiento</MenuItem>
@@ -310,9 +347,11 @@ const Home = () => {
                   <Select
                   labelId="label-tipo-estado"
                   id="tipo-estado"
+                  name="tipoEst"
                   value={tipoEstado}
                   onChange={handleChangeEstado}
                   >
+                  <MenuItem value={''}>Todos</MenuItem>
                   <MenuItem value={'Pendiente'}>Pendiente</MenuItem>
                   <MenuItem value={'Pagado'}>Pagado</MenuItem>
                   </Select>
@@ -322,9 +361,9 @@ const Home = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
         <InputLabel className={classes.label}>Rango de fechas:</InputLabel><br></br>
-        <TextField   className={classes.textField} type="date" name=""  /><br></br>
+        <TextField   className={classes.textField} type="date" name="finicio" value={finicio} onChange={handleChangeFinicio} /><br></br>
         
-          <TextField   className={classes.textField} type="date" name=""  /><br></br>
+          <TextField   className={classes.textField} type="date" name="ffin" value={ffin} onChange={handleChangeFfin} /><br></br>
         </Grid>
       </Grid>
     </div>
@@ -356,6 +395,7 @@ const Home = () => {
             <TableCell component="th" scope="row">
               {row.paciente}
             </TableCell>
+            <TableCell align="right">{row.tipo_atencion}</TableCell>
             <TableCell align="right">{row.tipo_paciente}</TableCell>
             <TableCell align="right">{row.fecha_atencion}</TableCell>
             <TableCell align="right">{row.monto}</TableCell>
