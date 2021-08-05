@@ -46,6 +46,8 @@ const Form = () => {
 
     const [dataPagos, setDataPagos] = useState({});
 
+    const [dataPacientes, setDataPacientes] = useState([]);
+
     const classes = useStyles();
     const nm = JSON.parse(localStorage.getItem('user'));
     
@@ -65,6 +67,12 @@ const Form = () => {
         console.log(res)
         const resp = await axios.get(`http://127.0.0.1:8000/api/montos?doctor=${nm.id_doctor}`)
         setDataPagos(resp.data)
+
+        axios.get(`http://127.0.0.1:8000/api/filtros?doctor=${nm.id_doctor}&tipoEst=pendiente`)
+            .then(response => {
+                setDataPacientes(response.data)
+            console.log(response.data)
+            });
       }
     
         useEffect(() => {
@@ -143,8 +151,72 @@ const Form = () => {
                     </form> 
               </Box>
               </Grid>
+
               <Grid item md={8} xs={12}>
-                  <Box m={2} p={3} boxShadow={1}>
+                <Box m={2} p={3} boxShadow={1}>
+                  <h3>Pagos pendientes</h3>
+                  <hr></hr>
+                  <TableContainer >
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Médico</TableCell>
+            {/*<TableCell align="right">Cliente</TableCell>*/}
+            <TableCell align="right">Fecha atención</TableCell>
+            <TableCell align="right">Paciente</TableCell>
+            <TableCell align="right">Concepto</TableCell>
+            {/*<TableCell align="right">Tipo procedimiento</TableCell>*/}
+            {/*<TableCell align="right">Tipo paciente</TableCell>*/}
+            {/*<TableCell align="right">Sede</TableCell>*/}
+            {/*<TableCell align="right">Proveedor</TableCell>*/}
+            <TableCell align="right">Estado</TableCell>
+            <TableCell align="right">Monto</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        
+          {
+          dataPacientes?
+        dataPacientes.map((row,index) => (
+          <>
+           <TableRow key={index}>
+            <TableCell component="th" scope="row">
+            {nm.nombres} {nm.ap_pat} {nm.ap_mat}
+            </TableCell>
+            {/*<TableCell align="right">{row.tipo_paciente == 'seguro' ? "RIMAC S.A.": ""}</TableCell>*/}
+            <TableCell align="right">{row.fecha_atencion}</TableCell>
+            <TableCell align="right">{row.paciente}</TableCell>
+            <TableCell align="right">{row.tipo_atencion == 'cita' ? "CONSULTA AMBULATORIA": row.tipo_atencion == 'procedimiento' ? "CIRUGIA": ""}</TableCell>
+            {/*<TableCell align="right">{row.tipo_atencion}</TableCell>*/}
+            {/*<TableCell align="right">{row.tipo_paciente}</TableCell>*/}
+            {/*<TableCell align="right">Medicentro</TableCell>*/}
+            {/*<TableCell align="right">San Borja</TableCell>*/}
+            <TableCell align="right">{row.estado}</TableCell>
+            <TableCell align="right">{row.monto}</TableCell>
+          </TableRow>
+          </>
+        )): "Cargando..."
+      }
+      <TableRow key="last">
+            <TableCell colspan="5" component="th" scope="row">
+              <b>Total</b>
+            </TableCell>
+            <TableCell align="right"><b>{ dataPacientes?
+        dataPacientes.reduce((sum, value) => (sum + value.monto ), 0)
+        : "Cargando..."
+      }</b></TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+                </Box>
+
+              </Grid>
+        </Grid>
+        <Grid container>
+            <Grid item md={2} xs={0}></Grid>
+        <Grid item md={8} xs={12}>
+        <Box m={2} p={3} boxShadow={1}>
                   <h3>Factura generada</h3>
                   <hr></hr>
                   <TableContainer >
@@ -198,12 +270,6 @@ const Form = () => {
         }
       />
                 </Box>
-                
-              </Grid>
-        </Grid>
-        <Grid container>
-            <Grid item md={2} xs={0}></Grid>
-        <Grid item md={8} xs={12}>
         <Box m={2} p={3} boxShadow={1}>
                   <h3>Facturas anteriores</h3>
                   <hr></hr>

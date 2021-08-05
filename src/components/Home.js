@@ -340,16 +340,18 @@ const Home = () => {
         </Card>
         
         <Grid container>
-        <Grid item md={4} xs={0}></Grid>
-              <Grid item md={4} xs={12}>
+        
+              <Grid item md={12} xs={12}>
               <Box m={2} p={2} boxShadow={1} >
               <Typography variant="h6" className={classes.title2}>
               Búsqueda de atenciones
             </Typography>
             <form>
+            <Grid container spacing={3}>
+            <Grid item md={4}>
             <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+      
+        
         <FormControl className={classes.formControl}>
                   <InputLabel id="label-tipo-paciente">Tipo de paciente</InputLabel>
                   <Select
@@ -365,9 +367,10 @@ const Home = () => {
                   <MenuItem value={'particular'}>Particular</MenuItem>
                   </Select>
                   </FormControl>
-        </Grid>
-      </Grid>
+        
     </div>
+    </Grid>
+    <Grid item md={4}>
     <div className={classes.root}>
                   <FormControl className={classes.formControl}>
                   <InputLabel id="label-tipo-consulta">Tipo de atención</InputLabel>
@@ -384,8 +387,12 @@ const Home = () => {
                   <MenuItem value={'bono'}>Bonos de cumplimiento</MenuItem>
                   </Select>
                   </FormControl>
+                  
               </div>
+              </Grid>
+              <Grid item md={4}>
               <div className={classes.root}>
+              
                   <FormControl className={classes.formControl}>
                   <InputLabel id="label-tipo-estado">Estado</InputLabel>
                   <Select
@@ -400,22 +407,30 @@ const Home = () => {
                   <MenuItem value={'Pagado'}>Pagado</MenuItem>
                   </Select>
                   </FormControl>
+                  
               </div>
+              </Grid>
+        </Grid>
               <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-        <InputLabel className={classes.label}>Rango de fechas:</InputLabel><br></br>
-        <TextField   className={classes.textField} type="date" name="finicio" value={finicio} onChange={handleChangeFinicio} /><br></br>
-        
-          <TextField   className={classes.textField} type="date" name="ffin" value={ffin} onChange={handleChangeFfin} /><br></br>
+        <Grid item md={12}>
+        <InputLabel className={classes.label}>Rango de fechas:</InputLabel>
         </Grid>
+        <Grid item md={5}>
+        <TextField   className={classes.textField} type="date" name="finicio" value={finicio} onChange={handleChangeFinicio} />
+        </Grid>
+        <Grid item md={5}>
+          <TextField   className={classes.textField} type="date" name="ffin" value={ffin} onChange={handleChangeFfin} />
+          </Grid>
+          <Grid item md={2}>
+          <Button variant="contained"  onClick={handleSubmit}  className={classes.btn2}  endIcon={<SearchIcon />}>Buscar</Button>
+          </Grid>
       </Grid>
     </div>
-     <Button variant="contained"  onClick={handleSubmit}  className={classes.btn2}  endIcon={<SearchIcon />}>Buscar</Button>
+     
             </form>
               </Box>
               </Grid>
-              <Grid item md={4} xs={0}></Grid>
 
               </Grid>
               <Grid container>
