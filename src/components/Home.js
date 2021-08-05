@@ -15,6 +15,8 @@ import Select from '@material-ui/core/Select';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import SearchIcon from '@material-ui/icons/Search';
+import Foot from './Foot';
+import Form from './Form';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -380,6 +382,7 @@ const Home = () => {
         <TableHead>
           <TableRow>
             <TableCell>Nombre paciente</TableCell>
+            <TableCell align="right">Tipo procedimiento</TableCell>
             <TableCell align="right">Tipo paciente</TableCell>
             <TableCell align="right">Fecha atención</TableCell>
             <TableCell align="right">Monto</TableCell>
@@ -412,41 +415,9 @@ const Home = () => {
                 </Box>
               </Grid>
         </Grid> 
+
+        <Form/>
         
-            
-            <Card className={classes.card2}>
-            <CardContent >
-           
-           
-            <TableContainer >
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-           
-            </CardContent>
-            </Card>
         
         </>
     )
