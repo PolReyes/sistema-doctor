@@ -44,28 +44,38 @@ const Form = () => {
 
     const [dataFacturas, setDataFacturas] = useState([]);
 
+    const [dataPagos, setDataPagos] = useState({});
+
     const classes = useStyles();
     const nm = JSON.parse(localStorage.getItem('user'));
+    
+    const total = parseInt(localStorage.getItem('ttl'));
     const [dataForm, setDataForm] = useState({
         ruc: `${nm.ruc}`,
         concepto: "",
         clavesol: "",
-        pass: ""
+        pass: "",
+        monto: total,
     });
+
 
     const getConsultas = async () => {
         const res = await axios.get(`http://127.0.0.1:8000/api/facturas?ruc=${nm.ruc}`)
         setDataFacturas(res.data)
         console.log(res)
+        const resp = await axios.get(`http://127.0.0.1:8000/api/montos?doctor=${nm.id_doctor}`)
+        setDataPagos(resp.data)
       }
     
         useEffect(() => {
           getConsultas();
-        }, [dataFacturas]);
+        },[]);
 
     
     const handleInput = (event) => {
         const { value, name } = event.target;
+
+        console.log(value)
         
         setDataForm({
             ...dataForm,
@@ -75,6 +85,13 @@ const Form = () => {
     
     const handleSubmit = () => {
         //const { userLogin, passLogin } = dataLogin;
+
+        setDataForm({
+            ...dataForm,
+            monto: dataPagos.hasOwnProperty('success') ? dataPagos.total: 0,
+        });
+
+        console.log(dataForm)
 
         axios.post("http://127.0.0.1:8000/api/registrar",dataForm)
         .then(response => {
@@ -108,13 +125,13 @@ const Form = () => {
                 </Typography>
                     <form noValidate autoComplete="off">
                         <div>
-                        <TextField className={classes.field}  label="RUC"  type="text" name="ruc" value={nm.ruc} readonly onChange={handleInput} />
+                        <TextField className={classes.field}  label="RUC"  type="text" name="ruc" value={nm.ruc} readOnly onChange={handleInput} />
                         </div>
                         <div>
-                        <TextField  className={classes.field}  type="text" name="concepto" required onChange={handleInput} />
+                        <TextField  className={classes.field}  type="text" name="concepto"  required onChange={handleInput} />
                         </div>
                         <div>
-                        <TextField  className={classes.field} label="Monto"  type="text" name="monto" required onChange={handleInput}/>
+                        <TextField  className={classes.field} label="Monto"  type="text" name="monto" value={total} required onChange={handleInput}/>
                         </div>
                         <div>
                         <TextField  className={classes.field}  label="Clave Sol" type="text" name="clavesol" required onChange={handleInput} />
@@ -181,7 +198,13 @@ const Form = () => {
         }
       />
                 </Box>
-                <Box m={2} p={3} boxShadow={1}>
+                
+              </Grid>
+        </Grid>
+        <Grid container>
+            <Grid item md={2} xs={0}></Grid>
+        <Grid item md={8} xs={12}>
+        <Box m={2} p={3} boxShadow={1}>
                   <h3>Facturas anteriores</h3>
                   <hr></hr>
                   <TableContainer >
@@ -218,7 +241,8 @@ const Form = () => {
                     </Table>
                  </TableContainer>
                 </Box>
-              </Grid>
+                </Grid>
+                <Grid item md={2} xs={0}></Grid>
         </Grid>
         </div>
     )

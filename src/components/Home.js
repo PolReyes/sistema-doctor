@@ -105,7 +105,7 @@ const Home = () => {
     const res = await axios.get(`http://127.0.0.1:8000/api/listar?doctor=${nm.id_doctor}`)
     setDataPacientes(res.data)
     console.log(res)
-    const resp = await axios.get(`http://127.0.0.1:8000/api/montos?doctor=${nm.id_doctor}&ruc=${nm.ruc}`)
+    const resp = await axios.get(`http://127.0.0.1:8000/api/montos?doctor=${nm.id_doctor}`)
     setDataPagos(resp.data)
   }
 
@@ -150,6 +150,8 @@ const Home = () => {
             [name]: value,
         });
   };
+
+  let a = 0;
   const handleChangeEstado = (event) => {
     settipoEstado(event.target.value);
     const { value, name } = event.target;
@@ -196,7 +198,7 @@ const Home = () => {
         <Card className={classes.card} >
             <CardContent >
             <Typography variant="h6" className={classes.title}>
-                Bienvenido Dr. {nm.nombres} {nm.ap_pat}
+                Bienvenido Dr. {nm ? nm.nombres + " "+ nm.ap_pat : ""}
                 <Link to="/logout">
                 <Button variant="contained" className={classes.btn}  endIcon={<ExitToAppIcon />}>Salir</Button>
                 </Link>
@@ -297,6 +299,8 @@ const Home = () => {
               <Box  p={2} boxShadow={1} className={classes.cardInfo} >
                   <h3>Bonos</h3>
                   <hr></hr>
+                  {dataPagos.hasOwnProperty('success') ?
+                  localStorage.setItem("ttl",dataPagos.total) :""}
       {dataPagos.hasOwnProperty('success') ?
       <>
       <TableContainer >
@@ -336,6 +340,7 @@ const Home = () => {
         </Card>
         
         <Grid container>
+        <Grid item md={4} xs={0}></Grid>
               <Grid item md={4} xs={12}>
               <Box m={2} p={2} boxShadow={1} >
               <Typography variant="h6" className={classes.title2}>
@@ -410,7 +415,11 @@ const Home = () => {
             </form>
               </Box>
               </Grid>
-              <Grid item md={8} xs={12}>
+              <Grid item md={4} xs={0}></Grid>
+
+              </Grid>
+              <Grid container>
+              <Grid item md={12} xs={12}>
                 <Box m={2} p={3} boxShadow={1}>
                   <h3>Reporte de servicios brindados</h3>
                   <hr></hr>
@@ -418,34 +427,52 @@ const Home = () => {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Nombre paciente</TableCell>
-            <TableCell align="right">Tipo procedimiento</TableCell>
-            <TableCell align="right">Tipo paciente</TableCell>
+            <TableCell>Médico</TableCell>
+            <TableCell align="right">Cliente</TableCell>
             <TableCell align="right">Fecha atención</TableCell>
-            <TableCell align="right">Monto</TableCell>
+            <TableCell align="right">Paciente</TableCell>
+            <TableCell align="right">Concepto</TableCell>
+            {/*<TableCell align="right">Tipo procedimiento</TableCell>*/}
+            {/*<TableCell align="right">Tipo paciente</TableCell>*/}
+            <TableCell align="right">Sede</TableCell>
+            <TableCell align="right">Proveedor</TableCell>
             <TableCell align="right">Estado</TableCell>
+            <TableCell align="right">Monto</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-        {
+        
+          {
           dataPacientes?
         dataPacientes.map((row,index) => (
           <>
            <TableRow key={index}>
             <TableCell component="th" scope="row">
-              {row.paciente}
+            {nm.nombres} {nm.ap_pat} {nm.ap_mat}
             </TableCell>
-            <TableCell align="right">{row.tipo_atencion}</TableCell>
-            <TableCell align="right">{row.tipo_paciente}</TableCell>
+            <TableCell align="right">{row.tipo_paciente == 'seguro' ? "RIMAC S.A.": ""}</TableCell>
             <TableCell align="right">{row.fecha_atencion}</TableCell>
-            <TableCell align="right">{row.monto}</TableCell>
+            <TableCell align="right">{row.paciente}</TableCell>
+            <TableCell align="right">{row.tipo_atencion == 'cita' ? "CONSULTA AMBULATORIA": row.tipo_atencion == 'procedimiento' ? "CIRUGIA": ""}</TableCell>
+            {/*<TableCell align="right">{row.tipo_atencion}</TableCell>*/}
+            {/*<TableCell align="right">{row.tipo_paciente}</TableCell>*/}
+            <TableCell align="right">Medicentro</TableCell>
+            <TableCell align="right">San Borja</TableCell>
             <TableCell align="right">{row.estado}</TableCell>
+            <TableCell align="right">{row.monto}</TableCell>
           </TableRow>
-            
-          
           </>
         )): "Cargando..."
-      }       
+      }
+      <TableRow key="last">
+            <TableCell colspan="8" component="th" scope="row">
+              <b>Total</b>
+            </TableCell>
+            <TableCell align="right"><b>{ dataPacientes?
+        dataPacientes.reduce((sum, value) => (sum + value.monto ), 0)
+        : "Cargando..."
+      }</b></TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
