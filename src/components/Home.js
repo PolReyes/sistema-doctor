@@ -55,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
   btn:{
     backgroundColor:'#00E1CD',
     color:'#fff',
-    float:'right'
+    float:'right',
+    margin: '5px'
   },
   btn2:{
     backgroundColor:'#00E1CD',
@@ -199,6 +200,9 @@ const Home = () => {
                 <Link to="/logout">
                 <Button variant="contained" className={classes.btn}  endIcon={<ExitToAppIcon />}>Salir</Button>
                 </Link>
+                <Link to="/form">
+                <Button variant="contained" className={classes.btn}  >GENERAR FACTURA/RECIBO</Button>
+                </Link>
             </Typography>
            
             </CardContent>
@@ -299,6 +303,7 @@ const Home = () => {
       <Table className={classes.table1}  size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
+            <TableCell>Tipo</TableCell>
             <TableCell>Cantidad</TableCell>
             <TableCell>Monto</TableCell>
           </TableRow>
