@@ -7,6 +7,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Link } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles({
     root: {
@@ -17,7 +22,9 @@ const useStyles = makeStyles({
       },
     title:{
         color:'#0033A0',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign:'Left',
+        fontSize:'30px'
     },
 
     field:{
@@ -75,13 +82,29 @@ const Form = () => {
             setDataFactura(response.data)
         });
     };
+
+    const [open, setOpen] = React.useState(false);
+    const handleClick = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
     return (
         <div>
             <Grid container>
               <Grid item md={4} xs={12}>
               <Box m={2} p={2} boxShadow={3} >
-              <Typography variant="h4" className={classes.title}  >
-                        Generar Recibo/Factura
+                
+              <Typography variant="h5" className={classes.title}  >
+              <Link to="/home">
+                    <Button  color="primary" endIcon={<ArrowBackIcon/>}></Button>
+                </Link>Generar Recibo/Factura
                 </Typography>
                     <form noValidate autoComplete="off">
                         <div>
@@ -139,6 +162,24 @@ const Form = () => {
                         </TableBody>
                     </Table>
                  </TableContainer>
+                 <Button onClick={handleClick} className={classes.btn} variant="contained">Enviar</Button>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Factura/Recibo Enviado"
+        action={
+          <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
                 </Box>
                 <Box m={2} p={3} boxShadow={1}>
                   <h3>Facturas anteriores</h3>
