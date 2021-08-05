@@ -98,11 +98,14 @@ const rows = [
 const Home = () => {
   const nm = JSON.parse(localStorage.getItem('user'));
   const [dataPacientes, setDataPacientes] = useState([]);
+  const [dataPagos, setDataPagos] = useState({});
 
   const getConsultas = async () => {
     const res = await axios.get(`http://127.0.0.1:8000/api/listar?doctor=${nm.id_doctor}`)
     setDataPacientes(res.data)
     console.log(res)
+    const resp = await axios.get(`http://127.0.0.1:8000/api/montos?doctor=${nm.id_doctor}&ruc=${nm.ruc}`)
+    setDataPagos(resp.data)
   }
 
     useEffect(() => {
@@ -200,7 +203,7 @@ const Home = () => {
            
             </CardContent>
             <Typography variant="h6" className={classes.title1}>
-                04 de Julio 2021
+                05 de agosto 2021
             </Typography>
            <Typography variant="h6" className={classes.title1}>
                 MONTOS ACUMULADOS PENDIENTES DE PAGO
@@ -212,7 +215,10 @@ const Home = () => {
               <Box  p={2} boxShadow={1} className={classes.cardInfo} >
               <h3>Citas</h3>
                   <hr></hr>
-                  <TableContainer >
+                  
+      {dataPagos.hasOwnProperty('success') ?
+      <>
+      <TableContainer >
       <Table className={classes.table1}  size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -222,17 +228,23 @@ const Home = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell >S/.{row.fat}</TableCell>
+            <TableRow key="seguro">
+              <TableCell>Seguro</TableCell>
+              <TableCell>{dataPagos.cantidades[0]}</TableCell>
+              <TableCell >S/ {dataPagos.montos[0]}</TableCell>
             </TableRow>
-          ))}
+            <TableRow key="particular">
+              <TableCell>Particular</TableCell>
+              <TableCell>{dataPagos.cantidades[1]}</TableCell>
+              <TableCell >S/ {dataPagos.montos[1]}</TableCell>
+            </TableRow>
         </TableBody>
       </Table>
     </TableContainer> 
-    <h4>Monto Acumulado: S/.15</h4>
+    <h4>Monto Acumulado: S/ {dataPagos.totales[0]}</h4>
+      </>
+    : "Cargando..."
+    }
     <h4>Estado: Pendiente</h4> 
               </Box>
               </Grid>
@@ -240,7 +252,10 @@ const Home = () => {
               <Box  p={2} boxShadow={1} className={classes.cardInfo} >
                   <h3>Procedimientos</h3>
                   <hr></hr>
-                  <TableContainer >
+      
+      {dataPagos.hasOwnProperty('success') ?
+      <>
+      <TableContainer >
       <Table className={classes.table1}  size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -251,18 +266,26 @@ const Home = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.calories}</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell >S/.{row.fat}</TableCell>
+
+        <TableRow key="seguro">
+              <TableCell>Seguro</TableCell>
+              <TableCell>Cirugia</TableCell>
+              <TableCell>{dataPagos.cantidades[2]}</TableCell>
+              <TableCell >S/ {dataPagos.montos[2]}</TableCell>
             </TableRow>
-          ))}
+            <TableRow key="particular">
+              <TableCell>Particular</TableCell>
+              <TableCell>Cirugia</TableCell>
+              <TableCell>{dataPagos.cantidades[3]}</TableCell>
+              <TableCell >S/ {dataPagos.montos[3]}</TableCell>
+            </TableRow>
         </TableBody>
       </Table>
     </TableContainer> 
-    <h4>Monto Acumulado: S/.15</h4>
+    <h4>Monto Acumulado: S/ {dataPagos.totales[1]}</h4>
+    </>
+    : "Cargando..."
+    }
     <h4>Estado: Pendiente</h4> 
                 </Box>
               </Grid>
@@ -270,7 +293,9 @@ const Home = () => {
               <Box  p={2} boxShadow={1} className={classes.cardInfo} >
                   <h3>Bonos</h3>
                   <hr></hr>
-                  <TableContainer >
+      {dataPagos.hasOwnProperty('success') ?
+      <>
+      <TableContainer >
       <Table className={classes.table1}  size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -279,16 +304,23 @@ const Home = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell>10</TableCell>
-              <TableCell >S/.{row.fat}</TableCell>
+            <TableRow key="seguro">
+              <TableCell>Seguro</TableCell>
+              <TableCell>{dataPagos.cantidades[4]}</TableCell>
+              <TableCell >S/ {dataPagos.montos[4]}</TableCell>
             </TableRow>
-          ))}
+            <TableRow key="particular">
+              <TableCell>Particular</TableCell>
+              <TableCell>{dataPagos.cantidades[5]}</TableCell>
+              <TableCell >S/ {dataPagos.montos[5]}</TableCell>
+            </TableRow>
         </TableBody>
       </Table>
     </TableContainer> 
-    <h4>Monto Acumulado: S/.15</h4>
+    <h4>Monto Acumulado: S/ {dataPagos.totales[2]}</h4>
+    </>
+    : "Cargando..."
+    }
     <h4>Estado: Pendiente</h4>
                 </Box>
               </Grid>
@@ -328,7 +360,7 @@ const Home = () => {
     </div>
     <div className={classes.root}>
                   <FormControl className={classes.formControl}>
-                  <InputLabel id="label-tipo-consulta">Tipo de pago</InputLabel>
+                  <InputLabel id="label-tipo-consulta">Tipo de atención</InputLabel>
                   <Select
                   labelId="label-tipo-consulta"
                   id="tipo-consulta"
@@ -337,9 +369,9 @@ const Home = () => {
                   onChange={handleChangeConsulta}
                   >
                   <MenuItem value={''}>Todos</MenuItem>
-                  <MenuItem value={'Cita'}>Citas atendidas</MenuItem>
-                  <MenuItem value={'Procedimiento'}>Procedimientos</MenuItem>
-                  <MenuItem value={'Bonos'}>Bonos de cumplimiento</MenuItem>
+                  <MenuItem value={'cita'}>Citas atendidas</MenuItem>
+                  <MenuItem value={'procedimiento'}>Procedimientos</MenuItem>
+                  <MenuItem value={'bono'}>Bonos de cumplimiento</MenuItem>
                   </Select>
                   </FormControl>
               </div>
@@ -416,7 +448,7 @@ const Home = () => {
               </Grid>
         </Grid> 
 
-        <Form/>
+        
         
         
         </>
