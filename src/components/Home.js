@@ -15,8 +15,12 @@ import Select from '@material-ui/core/Select';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import SearchIcon from '@material-ui/icons/Search';
-import Foot from './Foot';
-import Form from './Form';
+import Login from './Login';
+import Form  from './Form';
+import Logout  from './Logout';
+import Register from './Register'
+import { BrowserRouter as Router, Switch,Route} from "react-router-dom";
+import Main from './Main';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,8 +73,6 @@ const useStyles = makeStyles((theme) => ({
     margin: '10px',
     //flexGrow:1
   },
-  selectEmpty: {
-  },
   label: {
     float:'left',
     //marginTop:'5px',
@@ -88,14 +90,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Particular', 'Cirujía', 6.0),
-  createData('Seguro', 'Cirujía', 9.0),
-];
 const Home = () => {
   const nm = JSON.parse(localStorage.getItem('user'));
   const [dataPacientes, setDataPacientes] = useState([]);
@@ -194,7 +188,7 @@ const Home = () => {
 };
     return (
         <>
-        
+       
         <Card className={classes.card} >
             <CardContent >
             <Typography variant="h6" className={classes.title}>
