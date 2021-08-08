@@ -7,12 +7,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { Link } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-
+import { Alert, AlertTitle } from '@material-ui/lab';
 const useStyles = makeStyles({
     root: {
         maxWidth: 480,
@@ -24,7 +22,6 @@ const useStyles = makeStyles({
         color:'#0033A0',
         fontWeight: 'bold',
         textAlign:'Left',
-        fontSize:'30px'
     },
 
     field:{
@@ -35,6 +32,11 @@ const useStyles = makeStyles({
         backgroundColor:'#00E1CD',
         margin:'20px',
         color:'#fff'
+    },
+    container:{
+      marginTop:'70px',
+      padding: '20px',
+          width:'100%'
     }
 });
 
@@ -121,43 +123,15 @@ const Form = () => {
         setOpen(false);
       };
     return (
-        <div>
+      <div className={classes.container}>
             <Grid container>
-              <Grid item md={4} xs={12}>
-              <Box m={2} p={2} boxShadow={3} >
-                
-              <Typography variant="h5" className={classes.title}  >
-              <Link to="/home">
-                    <Button  color="primary" endIcon={<ArrowBackIcon/>}></Button>
-                </Link>Generar Recibo/Factura
-                </Typography>
-                    <form noValidate autoComplete="off">
-                        <div>
-                        <TextField className={classes.field}  label="RUC"  type="text" name="ruc" value={nm.ruc} readOnly onChange={handleInput} />
-                        </div>
-                        <div>
-                        <TextField  className={classes.field}  type="text" name="concepto"  required onChange={handleInput} />
-                        </div>
-                        <div>
-                        <TextField  className={classes.field} label="Monto"  type="text" name="monto" value={total} required onChange={handleInput}/>
-                        </div>
-                        <div>
-                        <TextField  className={classes.field}  label="Clave Sol" type="text" name="clavesol" required onChange={handleInput} />
-                        </div>
-                        <div>
-                        <TextField  className={classes.field} label="Contraseña"  type="password" name="pass" required onChange={handleInput}/>
-                        </div>
-                        <Button variant="contained" className={classes.btn} onClick={handleSubmit}>Generar</Button>
-                    </form> 
-              </Box>
-              </Grid>
-
-              <Grid item md={8} xs={12}>
-                <Box m={2} p={3} boxShadow={1}>
+              
+              <Grid item md={12} xs={12}>
+              <Box m={2} p={3} boxShadow={1}>
                   <h3>Pagos pendientes</h3>
                   <hr></hr>
                   <TableContainer >
-      <Table className={classes.table} aria-label="simple table">
+      <Table className={classes.table} size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Médico</TableCell>
@@ -210,12 +184,35 @@ const Form = () => {
       </Table>
     </TableContainer>
                 </Box>
-
+            </Grid>   
+            <Grid item xs={12}>
+              <Box m={2} p={2} boxShadow={1} >
+                
+              <Typography variant="h5" className={classes.title}  >
+              Verifica tus datos
+              
+                </Typography>
+                    <form noValidate autoComplete="off">
+                        <div>
+                        <TextField className={classes.field}  label="RUC"  type="text" name="ruc" value={nm.ruc} readOnly onChange={handleInput} />
+                        </div>
+                        <div>
+                        <TextField  className={classes.field}  type="text" name="concepto"  required onChange={handleInput} />
+                        </div>
+                        <div>
+                        <TextField  className={classes.field} label="Monto"  type="text" name="monto" value={total} required onChange={handleInput}/>
+                        </div>
+                        <div>
+                        <TextField  className={classes.field}  label="Clave Sol" type="text" name="clavesol" required onChange={handleInput} />
+                        </div>
+                        <div>
+                        <TextField  className={classes.field} label="Contraseña"  type="password" name="pass" required onChange={handleInput}/>
+                        </div>
+                        <Button variant="contained" className={classes.btn} onClick={handleSubmit}>Generar</Button>
+                    </form> 
+              </Box>
               </Grid>
-        </Grid>
-        <Grid container>
-            <Grid item md={2} xs={0}></Grid>
-        <Grid item md={8} xs={12}>
+              <Grid item md={12} xs={12}>
         <Box m={2} p={3} boxShadow={1}>
                   <h3>Factura generada</h3>
                   <hr></hr>
@@ -308,9 +305,10 @@ const Form = () => {
                  </TableContainer>
                 </Box>
                 </Grid>
-                <Grid item md={2} xs={0}></Grid>
-        </Grid>
+
+            </Grid>
         </div>
+            
     )
 }
 

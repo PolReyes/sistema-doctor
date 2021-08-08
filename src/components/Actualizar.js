@@ -86,11 +86,10 @@ function eliminarRuc() {
         
     }
 }
-const Register = () => {
+const Actualizar = () => {
     const classes = useStyles();
-
     return (
-        <div className="App">
+        <>
             <Grid container >
               <Grid item md={12} xs={12}><br></br><br></br>
                   <Paper elevation={2} className={classes.root}>
@@ -98,7 +97,7 @@ const Register = () => {
                     <form className={classes.form} noValidate autoComplete="off">
                     
                     <Typography  variant="h5" color="primary" className={classes.title} >
-                    {<InfoIcon style={{  verticalAlign: 'middle' }} fontSize="large"/> } Actualiza tus datos para continuar 
+                    {<InfoIcon style={{  verticalAlign: 'middle' }} fontSize="large"/> } Actualiza tus datos 
                     </Typography>
                         <div id="btnEliminar" style={{display:"none"}}>
                         <Button   className={classes.btn2} color="primary"  onClick={agregarRuc} endIcon={<ClearIcon/>}>Eliminar RUC</Button>
@@ -121,8 +120,8 @@ const Register = () => {
                   </Paper>    
               </Grid>
             </Grid>
-        </div>
+        </>
     )
 }
 
-export default Register
+export default Actualizar

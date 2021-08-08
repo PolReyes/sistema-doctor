@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background: -webkit-linear-gradient(left, #0033A0 , #008EDD , #00E3D9 ); 
+  height: 100vh;
+  width: 100%;
 }
 
 .App-logo {

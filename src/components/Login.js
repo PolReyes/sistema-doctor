@@ -1,4 +1,4 @@
-import { Grid, Paper } from '@material-ui/core';
+import { Container, Grid, Paper } from '@material-ui/core';
 import React from 'react';
 import { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,6 +10,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import axios from 'axios';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HttpsIcon from '@material-ui/icons/Https';
+import '../App.css';
 
 const useStyles = makeStyles({
     root: {
@@ -78,9 +79,11 @@ const Login = () => {
     };
 
     return (
-        <>
-            
-                  <Paper elevation={3} className={classes.root}>
+        <div className="App">
+            <Container  fixed>
+            <Grid container>
+            <Grid item xs={12}><br></br><br></br>
+            <Paper elevation={2} className={classes.root}>
                   <Typography variant="h4" color="primary" className={classes.title} >
                       Bienvenido
                     </Typography>
@@ -114,7 +117,12 @@ const Login = () => {
                     
                     </form> 
                   </Paper>
-        </>
+            </Grid>  
+            </Grid>
+            
+                  </Container>
+                  
+        </div>
     )
 }
 
