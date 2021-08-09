@@ -13,6 +13,7 @@ import SideBar from './components/SideBar';
 import Procedimiento from './components/Procedimiento';
 import Bono from './components/Bono';
 import Actualizar from './components/Actualizar'
+import Inicio from './components/Inicio';
 
 const useStyles = makeStyles({
   container: {
@@ -30,10 +31,11 @@ function App() {
         <Route path="/" exact>
         <NavBar/>
         <Login/>
-       
-        
-        
          </Route>
+        <Route path="/inicio">
+        <NavBar/>
+        <Inicio/>
+        </Route>
         <Route path="/home">
         <SideBar />
         <Home/>
