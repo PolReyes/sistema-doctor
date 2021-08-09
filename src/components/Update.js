@@ -9,7 +9,6 @@ import axios from 'axios';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import InfoIcon from '@material-ui/icons/Info';
-import { useHistory } from "react-router-dom";
 import ClearIcon from '@material-ui/icons/Clear';
 import '../App.css';
 
@@ -87,33 +86,11 @@ function eliminarRuc() {
         
     }
 }
-const Actualizar = () => {
+const Update = () => {
     const classes = useStyles();
 
-    const [dataUpdate, setDataUpdate] = useState({});
-  
-      const handleInput = (event) => {
-        const { value, name } = event.target;
-        
-        setDataUpdate({
-            ...dataUpdate,
-            [name]: value,
-        });
-      };
-      let history = useHistory(); 
-
-      const handleSubmit = () => {
-        axios.post("http://127.0.0.1:8000/api/actruc",dataUpdate)
-        .then(response => {
-            console.log(dataUpdate);
-            console.log(response);
-            history.push("/home");
-        });
-        
-    };
-
     return (
-        <>
+        <div className="App">
             <Grid container >
               <Grid item md={12} xs={12}><br></br><br></br>
                   <Paper elevation={2} className={classes.root}>
@@ -121,33 +98,31 @@ const Actualizar = () => {
                     <form className={classes.form} noValidate autoComplete="off">
                     
                     <Typography  variant="h5" color="primary" className={classes.title} >
-                    {<InfoIcon style={{  verticalAlign: 'middle' }} fontSize="large"/> } Actualiza tus datos 
+                    {<InfoIcon style={{  verticalAlign: 'middle' }} fontSize="large"/> } Actualiza tus datos para continuar 
                     </Typography>
-                        {/*
                         <div id="btnEliminar" style={{display:"none"}}>
                         <Button   className={classes.btn2} color="primary"  onClick={agregarRuc} endIcon={<ClearIcon/>}>Eliminar RUC</Button>
                         </div>
                         <div id="btnAgregar">
                         <Button  className={classes.btn2} color="primary"  onClick={eliminarRuc} endIcon={<AddIcon/>}>Agregar RUC</Button>
                         </div>
-                        */}
-                        {/*<div id="div" style={{display:"none"}} >*/}
-                        <div>
-                        <TextField id="campo" className={classes.field}  label="RUC"  type="text" name="ruc"  required onChange={handleInput} />
+                        
+                        <div id="div" style={{display:"none"}} >
+                        <TextField id="campo" className={classes.field}  label="RUC"  type="text" name="ruc"  required/>
                         </div>
                         <div>
-                        <TextField  className={classes.field}  label="Clave Sol" type="text" name="clavesol" required onChange={handleInput} />
+                        <TextField  className={classes.field}  label="Clave Sol" type="text" name="clavesol" required />
                         </div>
                         <div>
-                        <TextField  className={classes.field} label="Contraseña"  type="password" name="solpass" required onChange={handleInput} />
+                        <TextField  className={classes.field} label="Contraseña"  type="password" name="pass" required />
                         </div>
-                        <Button variant="contained" className={classes.btn} onClick={handleSubmit} endIcon={<SaveIcon/>} >Guardar</Button>
+                        <Button variant="contained" className={classes.btn} endIcon={<SaveIcon/>} >Guardar</Button>
                     </form> 
                   </Paper>    
               </Grid>
             </Grid>
-        </>
+        </div>
     )
 }
 
-export default Actualizar
+export default Update

@@ -40,7 +40,7 @@ export const SidebarData = [
   },
   {
     title: 'Actualizar Datos',
-    path: '/register',
+    path: '/update',
     icon: <UpdateIcon />,
     cName: 'nav-text'
   },

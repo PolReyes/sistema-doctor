@@ -266,10 +266,10 @@ const Home = () => {
                 </Grid>
               
               <Grid item md={4} xs={12}>
-              <TextField   className={classes.formControl} type="date" name="finicio" value={finicio} onChange={handleChangeFinicio} />
+              <TextField inputProps={{min:"2021-07-01",max:"2021-08-09"}}  className={classes.formControl} type="date" name="finicio" value={finicio} onChange={handleChangeFinicio} />
                 </Grid>
                 <Grid item md={4} xs={12}>
-                <TextField   className={classes.formControl} type="date" name="ffin" value={ffin} onChange={handleChangeFfin} />
+                <TextField  inputProps={{max:"2021-08-09"}} className={classes.formControl} type="date" name="ffin" value={ffin} onChange={handleChangeFfin} />
                
                   
               </Grid>

@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Form = () => {
 
+  let importe = 0.0;
+  let subtotal = 0.0;
+
     const [dataFactura, setDataFactura] = useState({});
 
     const [dataFacturas, setDataFacturas] = useState([]);
@@ -91,7 +94,7 @@ const Form = () => {
             .then(response => {
                 setDataPacientes(response.data)
             console.log(response.data)
-            });
+        });
       }
     
         useEffect(() => {
@@ -115,12 +118,12 @@ const Form = () => {
 
         setDataForm({
             ...dataForm,
-            monto: dataPagos.hasOwnProperty('success') ? dataPagos.total: 0,
+            monto: subtotal,
         });
 
         console.log(dataForm)
 
-        axios.post("http://127.0.0.1:8000/api/registrar",dataForm)
+        axios.post("http://127.0.0.1:8000/api/registrofact",dataForm)
         .then(response => {
             console.log(response)
             setDataFactura(response.data)
@@ -130,33 +133,40 @@ const Form = () => {
     
       const columns = [
         { id: 'id', headerName: 'ID', width: 50 },
-        { field: 'medico', headerName: 'Médico', width: 200 },
+        { field: 'nom_doctor', headerName: 'Médico', width: 200 },
         {
-          field: 'cliente',
-          headerName: 'Cliente',
+          field: 'paciente',
+          headerName: 'Paciente',
           width: 250,
-          editable: true,
+          editable: false,
           sortable: false,
         },
         {
-          field: 'atencion',
+          field: 'fecha_atencion',
           headerName: 'Atención',
           width: 140,
-          editable: true,
+          editable: false,
           sortable: false,
         },
         {
-          field: 'concepto',
+          field: 'tipo_atencion',
           headerName: 'Concepto',
           width: 140,
-          editable: true,
+          editable: false,
+          sortable: false,
+        },
+        {
+          field: 'estado',
+          headerName: 'Estado',
+          width: 140,
+          editable: false,
           sortable: false,
         },
         {
           field: 'monto',
           headerName: 'Monto',
           width: 130,
-          editable: true,
+          editable: false,
         },
       ];
       
@@ -190,6 +200,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
 
   const handleClick = () => {
     setOpenAlert(true);
+    handleSubmit()
   };
 
   const handleCloseAlert = (event, reason) => {
@@ -201,12 +212,15 @@ const [openAlert, setOpenAlert] = React.useState(false);
   };
     return (
       <div className={classes.container}>
+        <Typography variant="h5" className={classes.title}  >
+              Generar Factura/Recibo
+     </Typography> 
             <Grid container>
             <Grid item xs={12}>
               <Box m={0} p={2} boxShadow={1} >
               <div style={{ height: 400, width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={dataPacientes ? dataPacientes : []}
         columns={columns}
         pageSize={5}
         checkboxSelection
@@ -214,11 +228,11 @@ const [openAlert, setOpenAlert] = React.useState(false);
       />
     </div><br></br>
     <form>
-    <Typography variant="h5" className={classes.title}  >
-              Generar Factura/Recibo
+    <Typography variant="h6" className={classes.title}  >
+             Concepto factura/recibo
      </Typography> 
      <div>
-    <TextField  className={classes.field} label="Concepto de pago"  type="text" name="concepto" required />
+    <TextField  className={classes.field} label="Concepto de pago"  type="text" name="concepto" onChange={handleInput} required />
       </div>
     <Button variant="contained" className={classes.btn} onClick={handleOpen}>Generar</Button> 
       <Modal
@@ -237,18 +251,18 @@ const [openAlert, setOpenAlert] = React.useState(false);
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Verificar factura/recibo</h2>
             <p id="transition-modal-description">
-              <h4>RUC: 000001212</h4>
+              <h4>RUC: {nm.ruc}</h4>
               <h4>Concepto de pago: </h4>
-              <h4>Clave sol: 000001212</h4>
-              <h4>Contraseña: 000001212</h4>
+              <h4>Clave sol: {nm.clave_sol}</h4>
+              <h4>Contraseña: {nm.pass_sol}</h4>
             Descuentos: 0.00<br></br>
             Bonificaciones: 0.00<br></br>
-            Atenciones: 8,644.27<br></br>
-            Importe bruto: 8,644.27<br></br>
-            Impuesto: 691.54<br></br>
-            Subtotal: 7,952.73<br></br>
+            Atenciones: {dataPacientes ? importe = dataPacientes.reduce((sum, value) => (sum + value.monto ), 0): 0}<br></br>
+            Importe bruto: {importe}<br></br>
+            Impuesto: {importe*0.18}<br></br>
+            Subtotal: {subtotal = importe*0.82}<br></br>
             Detracción: 0.00<br></br>
-            Total: 7,952.73<br></br>
+            Total: {subtotal}<br></br>
             </p>
             <Button variant="contained" className={classes.btn}  onClick={handleClick}>Aceptar</Button> 
             <Button variant="contained" className={classes.btn} onClick={handleClose} >Regresar</Button> 
@@ -258,11 +272,12 @@ const [openAlert, setOpenAlert] = React.useState(false);
     </form>
     <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
         <Alert onClose={handleCloseAlert} severity="success">
-          This is a success message!
+          Factura/recibo generado
         </Alert>
       </Snackbar>
                 </Box>
                 </Grid>
+              
               <Grid item md={12} xs={12}>
               <Box m={0} p={3} boxShadow={1}>
                   <h3>Pagos pendientes</h3>
@@ -321,7 +336,8 @@ const [openAlert, setOpenAlert] = React.useState(false);
       </Table>
     </TableContainer>
                 </Box>
-            </Grid>   
+            </Grid> 
+            {/*
             <Grid item xs={12}>
               <Box m={0} p={2} boxShadow={1} >
                 
@@ -345,11 +361,14 @@ const [openAlert, setOpenAlert] = React.useState(false);
                         <div>
                         <TextField  className={classes.field} label="Contraseña"  type="password" name="pass" required onChange={handleInput}/>
                         </div>
-                        <Button variant="contained" className={classes.btn} onClick={handleSubmit}>Generar</Button>
+                        <Button variant="contained" className={classes.btn} onClick={handleSubmit}>Generar factura</Button>
                     </form> 
               </Box>
               </Grid>
+            */}
               <Grid item md={12} xs={12}>
+        
+        {/*
         <Box m={0} p={3} boxShadow={1}>
                   <h3>Factura generada</h3>
                   <hr></hr>
@@ -387,7 +406,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
                  </TableContainer>
                  <Button className={classes.btn} variant="contained">Enviar</Button>
       
-                </Box>
+                  </Box>*/}
         <Box m={0} p={3} boxShadow={1}>
                   <h3>Facturas anteriores</h3>
                   <hr></hr>

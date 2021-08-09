@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect, useHistory, Link } from "react-router-dom";
 import axios from 'axios';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HttpsIcon from '@material-ui/icons/Https';
@@ -35,6 +35,9 @@ const useStyles = makeStyles({
         backgroundColor:'#00E1CD',
         margin:'30px',
         color:'#fff'
+    },
+    lnk:{
+        textDecoration: 'none'
     }
 });
 
@@ -73,7 +76,7 @@ const Login = () => {
             //setUsuario(rsp);
             //console.log(usuario);
             //<Home usuario={response.data} />
-            history.push("/Home");
+            history.push("/home");
             //<Redirect to="/Home"></Redirect>;
         });
     };
@@ -111,10 +114,13 @@ const Login = () => {
                         
                         </div>
                         <div>
-                        
-                        </div>
                         <Button variant="contained" className={classes.btn} endIcon={<ArrowForwardIcon />} onClick={handleSubmit} >Iniciar Sesión</Button>
-                    
+                        <Link to="/register" className={classes.lnk}>
+                        <Button variant="contained" className={classes.btn} >Registrarse</Button>
+                        </Link>
+                        </div>
+                        
+                        
                     </form> 
                   </Paper>
             </Grid>  
