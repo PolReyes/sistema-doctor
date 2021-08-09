@@ -190,11 +190,13 @@ const Home = () => {
       console.log(response.data)
     });
 };
+
     return (
         <>
             
         
         <Grid container className={classes.container}>
+        
         
               <Grid item xs={12}>
               <Box m={2} p={2} boxShadow={1} >
@@ -332,7 +334,7 @@ const Home = () => {
             <TableCell colspan="8" component="th" scope="row">
               <b>Total</b>
             </TableCell>
-            <TableCell align="right"><b>{ dataPacientes?
+            <TableCell ><b>{ dataPacientes?
         dataPacientes.reduce((sum, value) => (sum + value.monto ), 0)
         : "Cargando..."
       }</b></TableCell>

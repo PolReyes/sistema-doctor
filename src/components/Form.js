@@ -11,7 +11,13 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
-const useStyles = makeStyles({
+import { DataGrid } from '@material-ui/data-grid';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import MuiAlert from '@material-ui/lab/Alert';
+
+const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 480,
         margin:'auto',
@@ -37,8 +43,19 @@ const useStyles = makeStyles({
       marginTop:'70px',
       padding: '20px',
           width:'100%'
-    }
-});
+    },
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }));
 
 const Form = () => {
 
@@ -110,24 +127,144 @@ const Form = () => {
         });
     };
 
-    const [open, setOpen] = React.useState(false);
-    const handleClick = () => {
-        setOpen(true);
-      };
     
-      const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-    
-        setOpen(false);
-      };
+      const columns = [
+        { id: 'id', headerName: 'ID', width: 50 },
+        { field: 'medico', headerName: 'Médico', width: 200 },
+        {
+          field: 'cliente',
+          headerName: 'Cliente',
+          width: 250,
+          editable: true,
+          sortable: false,
+        },
+        {
+          field: 'atencion',
+          headerName: 'Atención',
+          width: 140,
+          editable: true,
+          sortable: false,
+        },
+        {
+          field: 'concepto',
+          headerName: 'Concepto',
+          width: 140,
+          editable: true,
+          sortable: false,
+        },
+        {
+          field: 'monto',
+          headerName: 'Monto',
+          width: 130,
+          editable: true,
+        },
+      ];
+      
+      const rows = [
+        { id:1,medico: 'Ruby Reynolds Ellis', cliente: 'HIDALGO MILLA YOLANDA OLINDA', atencion: '4/05/2021',concepto: 'cita', monto: 35 },
+        { id:2,medico: 'Ruby Reynolds Ellis', cliente: 'MENDOZA ALBIS MIRTHA CAROLINA', atencion: '4/05/2021',concepto: 'cita', monto: 105 },
+        { id:3,medico: 'Ruby Reynolds Ellis', cliente: 'MORENO SOLORZANO DEYSI', atencion: '4/05/2021',concepto: 'Jon', monto: 55 },
+        { id:4,medico: 'Ruby Reynolds Ellis', cliente: 'ORELLANA ORIHUELA MARIBEL BENI', atencion: '4/05/2021',concepto: 'cita', monto: 85 },
+        { id:5,medico: 'Ruby Reynolds Ellis', cliente: 'ORELLANA ORIHUELA MARIBEL BENI', atencion: '4/05/2021',concepto: 'cita', monto: 75 },
+        { id:6,medico: 'Ruby Reynolds Ellis', cliente: 'HIDALGO MILLA YOLANDA OLINDA', atencion: '4/05/2021',concepto: 'cita', monto: 35 },
+        { id:7,medico: 'Ruby Reynolds Ellis', cliente: 'MENDOZA ALBIS MIRTHA CAROLINA', atencion: '4/05/2021',concepto: 'cita', monto: 45 },
+        { id:8,medico: 'Ruby Reynolds Ellis', cliente: 'MORENO SOLORZANO DEYSI', atencion: '4/05/2021',concepto: 'Jon', monto: 60 },
+        { id:9,medico: 'Ruby Reynolds Ellis', cliente: 'ORELLANA ORIHUELA MARIBEL BENI', atencion: '4/05/2021',concepto: 'cita', monto: 35 },
+        { id:10,medico: 'Ruby Reynolds Ellis', cliente: 'ORELLANA ORIHUELA MARIBEL BENI', atencion: '4/05/2021',concepto: 'cita', monto: 35 },
+      ];
+
+const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+const [openAlert, setOpenAlert] = React.useState(false);
+
+  const handleClick = () => {
+    setOpenAlert(true);
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
     return (
       <div className={classes.container}>
             <Grid container>
-              
+            <Grid item xs={12}>
+              <Box m={0} p={2} boxShadow={1} >
+              <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        checkboxSelection
+        disableSelectionOnClick
+      />
+    </div><br></br>
+    <form>
+    <Typography variant="h5" className={classes.title}  >
+              Generar Factura/Recibo
+     </Typography> 
+     <div>
+    <TextField  className={classes.field} label="Concepto de pago"  type="text" name="concepto" required />
+      </div>
+    <Button variant="contained" className={classes.btn} onClick={handleOpen}>Generar</Button> 
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">Verificar factura/recibo</h2>
+            <p id="transition-modal-description">
+              <h4>RUC: 000001212</h4>
+              <h4>Concepto de pago: </h4>
+              <h4>Clave sol: 000001212</h4>
+              <h4>Contraseña: 000001212</h4>
+            Descuentos: 0.00<br></br>
+            Bonificaciones: 0.00<br></br>
+            Atenciones: 8,644.27<br></br>
+            Importe bruto: 8,644.27<br></br>
+            Impuesto: 691.54<br></br>
+            Subtotal: 7,952.73<br></br>
+            Detracción: 0.00<br></br>
+            Total: 7,952.73<br></br>
+            </p>
+            <Button variant="contained" className={classes.btn}  onClick={handleClick}>Aceptar</Button> 
+            <Button variant="contained" className={classes.btn} onClick={handleClose} >Regresar</Button> 
+          </div>
+        </Fade>
+      </Modal>
+    </form>
+    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
+        <Alert onClose={handleCloseAlert} severity="success">
+          This is a success message!
+        </Alert>
+      </Snackbar>
+                </Box>
+                </Grid>
               <Grid item md={12} xs={12}>
-              <Box m={2} p={3} boxShadow={1}>
+              <Box m={0} p={3} boxShadow={1}>
                   <h3>Pagos pendientes</h3>
                   <hr></hr>
                   <TableContainer >
@@ -186,7 +323,7 @@ const Form = () => {
                 </Box>
             </Grid>   
             <Grid item xs={12}>
-              <Box m={2} p={2} boxShadow={1} >
+              <Box m={0} p={2} boxShadow={1} >
                 
               <Typography variant="h5" className={classes.title}  >
               Verifica tus datos
@@ -213,7 +350,7 @@ const Form = () => {
               </Box>
               </Grid>
               <Grid item md={12} xs={12}>
-        <Box m={2} p={3} boxShadow={1}>
+        <Box m={0} p={3} boxShadow={1}>
                   <h3>Factura generada</h3>
                   <hr></hr>
                   <TableContainer >
@@ -248,26 +385,10 @@ const Form = () => {
                         </TableBody>
                     </Table>
                  </TableContainer>
-                 <Button onClick={handleClick} className={classes.btn} variant="contained">Enviar</Button>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Factura/Recibo Enviado"
-        action={
-          <React.Fragment>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </React.Fragment>
-        }
-      />
+                 <Button className={classes.btn} variant="contained">Enviar</Button>
+      
                 </Box>
-        <Box m={2} p={3} boxShadow={1}>
+        <Box m={0} p={3} boxShadow={1}>
                   <h3>Facturas anteriores</h3>
                   <hr></hr>
                   <TableContainer >
