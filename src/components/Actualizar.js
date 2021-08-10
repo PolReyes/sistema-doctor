@@ -133,7 +133,7 @@ const Actualizar = () => {
                         */}
                         {/*<div id="div" style={{display:"none"}} >*/}
                         <div>
-                        <TextField id="campo" className={classes.field}  label="RUC"  type="text" name="ruc"  required onChange={handleInput} />
+                        <TextField id="campo" className={classes.field}  label="usuario SUNAT"  type="text" name="ruc"  required onChange={handleInput} />
                         </div>
                         <div>
                         <TextField  className={classes.field}  label="Clave Sol" type="text" name="clavesol" required onChange={handleInput} />
