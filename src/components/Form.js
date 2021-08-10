@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
       backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
+     //border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
@@ -240,7 +240,6 @@ const [openAlert, setOpenAlert] = React.useState(false);
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
-        onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -248,13 +247,61 @@ const [openAlert, setOpenAlert] = React.useState(false);
         }}
       >
         <Fade in={open}>
+        <Grid container>
+              <Grid  item xs={11} style={{margin:'auto'}}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Verificar factura/recibo</h2>
-            <p id="transition-modal-description">
-              <h4>RUC: {nm.ruc}</h4>
+            
+              <Typography variant="h6">
+            Emisión de RHE - Información Preliminar
+            </Typography>
+             
+            <Box m={0} p={2} boxShadow={0} border={1} borderColor={'#0033A0'}>
+            <Grid container>
+              <Grid  item md={8} xs={12}>
+                
+                <Typography variant="h6">
+                JIMENEZ TELLO RAMIRO JOSE
+                </Typography>
+                <Typography variant="h7">
+            AV. GUARDIA CHALACA 1513 PROV. CONST. DEL CALLAO PROV. CONST. DEL CALLAO CALLAO
+            <br></br><strong>Teléfono: </strong>4531248
+            </Typography><br></br><br></br>
+                </Grid>
+                <Grid  item md={4} xs={12}>
+                <Box m={0} p={1} boxShadow={0} border={1} borderColor={'#0033A0'}>
+                <Typography variant="h7">
+                  R.U.C. 10451574829<br></br>
+                  RECIBO POR HONORARIOS ELECTRONICO
+                </Typography>
+                </Box><br></br>
+                </Grid>
+                </Grid>
+            
+            <Typography variant="h7">
+            
+              <strong>Recibí de: </strong>NOMBRE EMPRESA<br></br>
+              <strong>Identificado con </strong>RUC número<br></br>
+              <strong>Domiciliado en </strong>AV. ALFONSO UGARTE 1523 LIMA LIMA LIMA<br></br>
+              <strong>Tipo de Transacción: </strong>-<br></br>
+              <strong>La suma de </strong>QUINIENTOS Y 00/100 SOLES<br></br>
+              <strong>Por concepto </strong>DESCRIPCION DEL SERVICIO<br></br>
+              <strong>Observación </strong>-<br></br>
+              <strong>Inciso </strong>"A" DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA<br></br>
+              <strong>Fecha de Emisión </strong>10 <strong>de</strong> Agosto <strong>de</strong> 2021<br></br>
+              <Grid container>
+              <Grid  item md={8} xs={12}><br></br><br></br>
+                </Grid>
+                <Grid  item md={4} xs={12}>
+                <strong>Total por Honorarios: 500</strong><br></br>
+                <strong>Retención (8%) IR: 0.00</strong><br></br>
+                <strong>Total Neto Recibido: 500.00 SOLES</strong><br></br>
+                
+                </Grid>
+                </Grid>
+              
+              
+             {/*<h4>RUC: {nm.ruc}</h4>
               <h4>Concepto de pago: </h4>
-              <h4>Clave sol: {nm.clave_sol}</h4>
-              <h4>Contraseña: {nm.pass_sol}</h4>
             Descuentos: 0.00<br></br>
             Bonificaciones: 0.00<br></br>
             Atenciones: {dataPacientes ? importe = dataPacientes.reduce((sum, value) => (sum + value.monto ), 0): 0}<br></br>
@@ -262,11 +309,27 @@ const [openAlert, setOpenAlert] = React.useState(false);
             Impuesto: {importe*0.18}<br></br>
             Subtotal: {subtotal = importe*0.82}<br></br>
             Detracción: 0.00<br></br>
-            Total: {subtotal}<br></br>
-            </p>
-            <Button variant="contained" className={classes.btn}  onClick={handleClick}>Aceptar</Button> 
-            <Button variant="contained" className={classes.btn} onClick={handleClose} >Regresar</Button> 
+            Total: {subtotal}<br></br>*/}
+            </Typography>
+            <Grid container>
+              <Grid  item md={6} xs={12} style={{margin:'auto', textAlign:'center'}}>
+                <Typography variant="h7">
+                  <br></br>
+                  <strong>ESTO ES UN BORRADOR, NO TIENE NINGUNA VALIDEZ LEGAL</strong><br></br>
+                  ¿Está seguro que desea emitir este RHE?<br></br>
+                </Typography>
+                <Button variant="contained" className={classes.btn} color="primary" 
+              onClose={handleClose} >Emitir recibo</Button> 
+                <Button variant="contained" className={classes.btn} onClick={handleClose} color="primary" >Volver</Button> 
+            
+              </Grid>
+              </Grid>
+              </Box>
+            
+            
           </div>
+          </Grid>
+            </Grid>
         </Fade>
       </Modal>
     </form>
