@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import api from '../api';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -43,7 +44,7 @@ const Bono = () => {
     const [dataPagos, setDataPagos] = useState({});
 
     const getConsultas = async () => {
-        const resp = await axios.get(`http://147.182.244.196:8080/api/montos?doctor=${nm.id_doctor}`)
+        const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.id_doctor}`)
         setDataPagos(resp.data)
       }
       

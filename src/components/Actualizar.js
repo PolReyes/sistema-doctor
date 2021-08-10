@@ -12,6 +12,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import { useHistory } from "react-router-dom";
 import ClearIcon from '@material-ui/icons/Clear';
 import '../App.css';
+import api from '../api';
 
 const useStyles = makeStyles({
     root: {
@@ -103,7 +104,7 @@ const Actualizar = () => {
       let history = useHistory(); 
 
       const handleSubmit = () => {
-        axios.post("http://147.182.244.196:8080/api/actruc",dataUpdate)
+        axios.post(`http://${api}/api/actruc`,dataUpdate)
         .then(response => {
             console.log(dataUpdate);
             console.log(response);

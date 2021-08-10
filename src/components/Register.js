@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import api from '../api';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -226,7 +227,7 @@ const Register = () => {
     const handleSubmit = () => {
       //const dataLogin = '';
 
-      axios.post("http://147.182.244.196:8080/api/registrar",dataRegister)
+      axios.post(`http://${api}/api/registrar`,dataRegister)
       .then(response => {
           //console.log(response.data);
           //localStorage.setItem("user",JSON.stringify(response.data));

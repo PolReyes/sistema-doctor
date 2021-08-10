@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import axios from 'axios';
 import SearchIcon from '@material-ui/icons/Search';
+import api from '../api';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -100,10 +101,10 @@ const Home = () => {
   const [dataPagos, setDataPagos] = useState({});
 
   const getConsultas = async () => {
-    const res = await axios.get(`http://147.182.244.196:8080/api/listar?doctor=${nm.id_doctor}`)
+    const res = await axios.get(`http://${api}/api/listar?doctor=${nm.id_doctor}`)
     setDataPacientes(res.data)
     console.log(res)
-    const resp = await axios.get(`http://147.182.244.196:8080/api/montos?doctor=${nm.id_doctor}`)
+    const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.id_doctor}`)
     setDataPagos(resp.data)
   }
 
@@ -184,7 +185,7 @@ const Home = () => {
     //const { userLogin, passLogin } = dataLogin;
 
     
-    axios.get(`http://147.182.244.196:8080/api/filtros?doctor=${nm.id_doctor}&tipoPac=${dataFiltros.tipoPac ? dataFiltros.tipoPac : ''}&tipoCons=${dataFiltros.tipoCons? dataFiltros.tipoCons : ''}&tipoEst=${dataFiltros.tipoEst ? dataFiltros.tipoEst : ''}&finicio=${dataFiltros.finicio ? dataFiltros.finicio : ''}&ffin=${dataFiltros.ffin ? dataFiltros.ffin : ''}`)
+    axios.get(`http://${api}/api/filtros?doctor=${nm.id_doctor}&tipoPac=${dataFiltros.tipoPac ? dataFiltros.tipoPac : ''}&tipoCons=${dataFiltros.tipoCons? dataFiltros.tipoCons : ''}&tipoEst=${dataFiltros.tipoEst ? dataFiltros.tipoEst : ''}&finicio=${dataFiltros.finicio ? dataFiltros.finicio : ''}&ffin=${dataFiltros.ffin ? dataFiltros.ffin : ''}`)
     .then(response => {
       setDataPacientes(response.data)
       console.log(response.data)

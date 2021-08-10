@@ -11,6 +11,7 @@ import axios from 'axios';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HttpsIcon from '@material-ui/icons/Https';
 import '../App.css';
+import api from '../api';
 
 const useStyles = makeStyles({
     root: {
@@ -66,7 +67,7 @@ const Login = () => {
     const handleSubmit = () => {
         //const { userLogin, passLogin } = dataLogin;
         //http://147.182.244.196:8080/api/login
-        axios.post("http://127.0.0.1:8000/api/login",dataLogin)
+        axios.post(`http://${api}/api/login`,dataLogin)
         .then(response => {
             //console.log(response.data);
             localStorage.setItem("user",JSON.stringify(response.data));
