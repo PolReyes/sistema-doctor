@@ -84,13 +84,13 @@ const Form = () => {
 
 
     const getConsultas = async () => {
-        const res = await axios.get(`http://127.0.0.1:8000/api/facturas?ruc=${nm.ruc}`)
+        const res = await axios.get(`http://147.182.244.196:8080/api/facturas?ruc=${nm.ruc}`)
         setDataFacturas(res.data)
         console.log(res)
-        const resp = await axios.get(`http://127.0.0.1:8000/api/montos?doctor=${nm.id_doctor}`)
+        const resp = await axios.get(`http://147.182.244.196:8080/api/montos?doctor=${nm.id_doctor}`)
         setDataPagos(resp.data)
 
-        axios.get(`http://127.0.0.1:8000/api/filtros?doctor=${nm.id_doctor}&tipoEst=pendiente`)
+        axios.get(`http://147.182.244.196:8080/api/filtros?doctor=${nm.id_doctor}&tipoEst=pendiente`)
             .then(response => {
                 setDataPacientes(response.data)
             console.log(response.data)
@@ -123,7 +123,7 @@ const Form = () => {
 
         console.log(dataForm)
 
-        axios.post("http://127.0.0.1:8000/api/registrofact",dataForm)
+        axios.post("http://147.182.244.196:8080/api/registrofact",dataForm)
         .then(response => {
             console.log(response)
             setDataFactura(response.data)

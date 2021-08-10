@@ -66,7 +66,7 @@ const Login = () => {
     const handleSubmit = () => {
         //const { userLogin, passLogin } = dataLogin;
 
-        axios.post("http://127.0.0.1:8000/api/login",dataLogin)
+        axios.post("http://147.182.244.196:8080/api/login",dataLogin)
         .then(response => {
             //console.log(response.data);
             localStorage.setItem("user",JSON.stringify(response.data));

@@ -43,7 +43,7 @@ const Procedimiento = () => {
     const [dataPagos, setDataPagos] = useState({});
 
     const getConsultas = async () => {
-        const resp = await axios.get(`http://127.0.0.1:8000/api/montos?doctor=${nm.id_doctor}`)
+        const resp = await axios.get(`http://147.182.244.196:8080/api/montos?doctor=${nm.id_doctor}`)
         setDataPagos(resp.data)
       }
       

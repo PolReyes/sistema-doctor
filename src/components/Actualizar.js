@@ -103,7 +103,7 @@ const Actualizar = () => {
       let history = useHistory(); 
 
       const handleSubmit = () => {
-        axios.post("http://127.0.0.1:8000/api/actruc",dataUpdate)
+        axios.post("http://147.182.244.196:8080/api/actruc",dataUpdate)
         .then(response => {
             console.log(dataUpdate);
             console.log(response);
