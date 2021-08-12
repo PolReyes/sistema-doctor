@@ -44,7 +44,7 @@ const Procedimiento = () => {
     const [dataPagos, setDataPagos] = useState({});
 
     const getConsultas = async () => {
-        const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.id_doctor}`)
+        const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.ID_DOCTOR}`)
         setDataPagos(resp.data)
       }
       

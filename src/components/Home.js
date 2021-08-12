@@ -101,10 +101,11 @@ const Home = () => {
   const [dataPagos, setDataPagos] = useState({});
 
   const getConsultas = async () => {
-    const res = await axios.get(`http://${api}/api/listar?doctor=${nm.id_doctor}`)
+    console.log(nm)
+    const res = await axios.get(`http://${api}/api/listar?doctor=${nm.ID_DOCTOR}`)
     setDataPacientes(res.data)
     console.log(res)
-    const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.id_doctor}`)
+    const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.ID_DOCTOR}`)
     setDataPagos(resp.data)
   }
 
@@ -315,7 +316,8 @@ const Home = () => {
           <>
            <TableRow key={index}>
             <TableCell component="th" scope="row">
-            {nm.nombres} {nm.ap_pat} {nm.ap_mat}
+            {/*{nm.nombres} {nm.ap_pat} {nm.ap_mat}*/}
+            {nm.APELLIDOS_NOMBRES}
             </TableCell>
             <TableCell >{row.tipo_paciente == 'seguro' ? "RIMAC S.A.": ""}</TableCell>
             <TableCell >{row.fecha_atencion}</TableCell>

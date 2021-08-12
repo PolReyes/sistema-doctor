@@ -60,12 +60,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Form = () => {
 
-  let importe = 0.0;
-  let subtotal = 0.0;
+  const [importe, setImporte] = useState(0)
+  //let subtotal = 0.0;
 
     const [dataFactura, setDataFactura] = useState({});
 
     const [dataFacturas, setDataFacturas] = useState([]);
+
+    let ids = [];
 
     const [dataPagos, setDataPagos] = useState({});
 
@@ -76,22 +78,22 @@ const Form = () => {
     
     const total = parseInt(localStorage.getItem('ttl'));
     const [dataForm, setDataForm] = useState({
-        ruc: `${nm.ruc}`,
+        ruc: `${nm.RUC}`,
         concepto: "",
         clavesol: "",
         pass: "",
-        monto: total,
+        monto: parseFloat(importe)
     });
 
 
     const getConsultas = async () => {
-        const res = await axios.get(`http://${api}/api/facturas?ruc=${nm.ruc}`)
+        const res = await axios.get(`http://${api}/api/facturas?ruc=${nm.RUC}`)
         setDataFacturas(res.data)
         console.log(res)
-        const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.id_doctor}`)
+        const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.ID_DOCTOR}`)
         setDataPagos(resp.data)
 
-        axios.get(`http://${api}/api/filtros?doctor=${nm.id_doctor}&tipoEst=pendiente`)
+        axios.get(`http://${api}/api/filtros?doctor=${nm.ID_DOCTOR}&tipoEst=pendiente`)
             .then(response => {
                 setDataPacientes(response.data)
             console.log(response.data)
@@ -116,11 +118,6 @@ const Form = () => {
     
     const handleSubmit = () => {
         //const { userLogin, passLogin } = dataLogin;
-
-        setDataForm({
-            ...dataForm,
-            monto: subtotal,
-        });
 
         console.log(dataForm)
 
@@ -187,7 +184,11 @@ const Form = () => {
 const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
-    setOpen(true);
+    console.log(importe)
+    console.log(dataForm.monto)
+    if(dataForm.monto == importe){
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
@@ -196,7 +197,7 @@ const [open, setOpen] = React.useState(false);
 
   function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+  }
 const [openAlert, setOpenAlert] = React.useState(false);
 
   const handleClick = () => {
@@ -226,6 +227,14 @@ const [openAlert, setOpenAlert] = React.useState(false);
         pageSize={5}
         checkboxSelection
         disableSelectionOnClick
+        onSelectionModelChange={(evt)=>{
+          setImporte(evt.reduce((sum, value) => (sum + dataPacientes[value].monto),0));
+          setDataForm({
+            ...dataForm,
+            monto: parseFloat(evt.reduce((sum, value) => (sum + dataPacientes[value].monto),0)),
+          });
+        console.log(dataForm);
+        }}
       />
     </div><br></br>
     <form>
@@ -261,17 +270,18 @@ const [openAlert, setOpenAlert] = React.useState(false);
               <Grid  item md={8} xs={12}>
                 
                 <Typography variant="h6">
-                JIMENEZ TELLO RAMIRO JOSE
+                {/*`${nm.ap_pat} ${nm.ap_mat} ${nm.nombres}`.toUpperCase()*/}
+                {nm.APELLIDOS_NOMBRES}
                 </Typography>
                 <Typography variant="h7">
-            AV. GUARDIA CHALACA 1513 PROV. CONST. DEL CALLAO PROV. CONST. DEL CALLAO CALLAO
-            <br></br><strong>Teléfono: </strong>4531248
-            </Typography><br></br><br></br>
+            {nm.DIRECCION.toUpperCase()}
+            <br/><strong>Teléfono: </strong>{nm.TELEFONO}
+            </Typography><br/><br/>
                 </Grid>
                 <Grid  item md={4} xs={12}>
-                <Box m={0} p={1} boxShadow={0} border={1} borderColor={'#0033A0'}>
-                <Typography variant="h7">
-                  R.U.C. 10451574829<br></br>
+                <Box m={0} p={1} boxShadow={0} border={1} textAlign={'center'} borderColor={'#0033A0'}>
+                <Typography align="center" variant="h7">
+                  R.U.C. {nm.RUC}<br/>
                   RECIBO POR HONORARIOS ELECTRONICO
                 </Typography>
                 </Box><br></br>
@@ -280,22 +290,22 @@ const [openAlert, setOpenAlert] = React.useState(false);
             
             <Typography variant="h7">
             
-              <strong>Recibí de: </strong>NOMBRE EMPRESA<br></br>
-              <strong>Identificado con </strong>RUC número<br></br>
-              <strong>Domiciliado en </strong>AV. ALFONSO UGARTE 1523 LIMA LIMA LIMA<br></br>
-              <strong>Tipo de Transacción: </strong>-<br></br>
-              <strong>La suma de </strong>QUINIENTOS Y 00/100 SOLES<br></br>
-              <strong>Por concepto </strong>DESCRIPCION DEL SERVICIO<br></br>
-              <strong>Observación </strong>-<br></br>
-              <strong>Inciso </strong>"A" DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA<br></br>
-              <strong>Fecha de Emisión </strong>10 <strong>de</strong> Agosto <strong>de</strong> 2021<br></br>
+              <strong>Recibí de: </strong>CLINICA INTERNACIONAL S A<br/>
+              <strong>Identificado con </strong>RUC número 20100054184<br/>
+              <strong>Domiciliado en </strong>JR. WASHINGTON NRO. 1471 LIMA LIMA LIMA<br/>
+              <strong>Tipo de Transacción: </strong>-<br/>
+              <strong>La suma de </strong>{dataForm.monto} Y 00/100 SOLES<br/>
+              <strong>Por concepto </strong>{dataForm.concepto.toUpperCase()}<br/>
+              <strong>Observación </strong>-<br/>
+              <strong>Inciso </strong>"A" DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA<br/>
+              <strong>Fecha de Emisión </strong>{(new Date()).getDate()} <strong>de</strong> {["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"][(new Date()).getMonth()]} <strong>de</strong> {(new Date()).getFullYear()}<br/>
               <Grid container>
-              <Grid  item md={8} xs={12}><br></br><br></br>
+              <Grid  item md={8} xs={12}><br/><br/>
                 </Grid>
                 <Grid  item md={4} xs={12}>
-                <strong>Total por Honorarios: 500</strong><br></br>
-                <strong>Retención (8%) IR: 0.00</strong><br></br>
-                <strong>Total Neto Recibido: 500.00 SOLES</strong><br></br>
+                <strong>Total por Honorarios: {parseFloat(importe).toFixed(2)}</strong><br/>
+                <strong>Retención (8%) IR: 0.00</strong><br/>
+                <strong>Total Neto Recibido: {parseFloat(importe).toFixed(2)} SOLES</strong><br/>
                 
                 </Grid>
                 </Grid>
@@ -319,9 +329,8 @@ const [openAlert, setOpenAlert] = React.useState(false);
                   <strong>ESTO ES UN BORRADOR, NO TIENE NINGUNA VALIDEZ LEGAL</strong><br></br>
                   ¿Está seguro que desea emitir este RHE?<br></br>
                 </Typography>
-                <Button variant="contained" className={classes.btn} color="primary" 
-              onClose={handleClose} >Emitir recibo</Button> 
-                <Button variant="contained" className={classes.btn} onClick={handleClose} color="primary" >Volver</Button> 
+                <Button variant="contained" style={{margin:'1em'}} color="primary" onClick={handleClick} >Emitir recibo</Button> 
+                <Button variant="contained" style={{margin:'1em'}} onClick={handleClose} color="secondary" >Volver</Button> 
             
               </Grid>
               </Grid>
@@ -342,7 +351,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
                 </Box>
                 </Grid>
               
-              <Grid item md={12} xs={12}>
+              {/*<Grid item md={12} xs={12}>
               <Box m={0} p={3} boxShadow={1}>
                   <h3>Pagos pendientes</h3>
                   <hr></hr>
@@ -352,41 +361,43 @@ const [openAlert, setOpenAlert] = React.useState(false);
           <TableRow>
             <TableCell>Médico</TableCell>
             {/*<TableCell align="right">Cliente</TableCell>*/}
-            <TableCell align="right">Fecha atención</TableCell>
+           {/*} <TableCell align="right">Fecha atención</TableCell>
             <TableCell align="right">Paciente</TableCell>
-            <TableCell align="right">Concepto</TableCell>
+          <TableCell align="right">Concepto</TableCell>*/}
             {/*<TableCell align="right">Tipo procedimiento</TableCell>*/}
             {/*<TableCell align="right">Tipo paciente</TableCell>*/}
             {/*<TableCell align="right">Sede</TableCell>*/}
             {/*<TableCell align="right">Proveedor</TableCell>*/}
-            <TableCell align="right">Estado</TableCell>
+           {/*} <TableCell align="right">Estado</TableCell>
             <TableCell align="right">Monto</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody>*/}
         
-          {
+          {/*
           dataPacientes?
         dataPacientes.map((row,index) => (
           <>
            <TableRow key={index}>
             <TableCell component="th" scope="row">
-            {nm.nombres} {nm.ap_pat} {nm.ap_mat}
-            </TableCell>
+            {/*{nm.nombres} {nm.ap_pat} {nm.ap_mat}*/}
+            {/*{nm.APELLIDOS_NOMBRES}
+            </TableCell>*/}
             {/*<TableCell align="right">{row.tipo_paciente == 'seguro' ? "RIMAC S.A.": ""}</TableCell>*/}
-            <TableCell align="right">{row.fecha_atencion}</TableCell>
+            {/*<TableCell align="right">{row.fecha_atencion}</TableCell>
             <TableCell align="right">{row.paciente}</TableCell>
             <TableCell align="right">{row.tipo_atencion == 'cita' ? "CONSULTA AMBULATORIA": row.tipo_atencion == 'procedimiento' ? "CIRUGIA": ""}</TableCell>
             {/*<TableCell align="right">{row.tipo_atencion}</TableCell>*/}
             {/*<TableCell align="right">{row.tipo_paciente}</TableCell>*/}
             {/*<TableCell align="right">Medicentro</TableCell>*/}
             {/*<TableCell align="right">San Borja</TableCell>*/}
-            <TableCell align="right">{row.estado}</TableCell>
+            {/*<TableCell align="right">{row.estado}</TableCell>
             <TableCell align="right">{row.monto}</TableCell>
           </TableRow>
           </>
         )): "Cargando..."
-      }
+          */}
+          {/*}
       <TableRow key="last">
             <TableCell colspan="5" component="th" scope="row">
               <b>Total</b>
@@ -399,8 +410,8 @@ const [openAlert, setOpenAlert] = React.useState(false);
         </TableBody>
       </Table>
     </TableContainer>
-                </Box>
-            </Grid> 
+    </Box>
+    </Grid>*/} 
             {/*
             <Grid item xs={12}>
               <Box m={0} p={2} boxShadow={1} >
@@ -495,8 +506,8 @@ const [openAlert, setOpenAlert] = React.useState(false);
                             <TableCell component="th" scope="row">
                             {row.ruc}
                             </TableCell>
-                            <TableCell>{nm.nombres} {nm.ap_pat} {nm.ap_mat}</TableCell>
-                            <TableCell>{nm.direccion}</TableCell>
+                            <TableCell>{/*{nm.nombres} {nm.ap_pat} {nm.ap_mat}*/}{nm.APELLIDOS_NOMBRES}</TableCell>
+                            <TableCell>{nm.DIRECCION}</TableCell>
                             <TableCell>{row.concepto}</TableCell>
                             <TableCell>{row.fec_emision}</TableCell>
                             <TableCell>{row.monto}</TableCell>
