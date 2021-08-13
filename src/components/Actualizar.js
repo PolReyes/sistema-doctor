@@ -112,6 +112,9 @@ const Actualizar = () => {
         });
         
     };
+    const [titulo,setTitulo] = React.useState("");
+    const [leyenda,setLeyenda] = React.useState("");
+    const [errorTitulo, setErrorTitulo]= React.useState(false);
 
     return (
         <>
@@ -134,13 +137,39 @@ const Actualizar = () => {
                         */}
                         {/*<div id="div" style={{display:"none"}} >*/}
                         <div>
-                        <TextField id="campo" className={classes.field}  label="usuario SUNAT"  type="text" name="ruc"  required onChange={handleInput} />
+                        <TextField id="campo" className={classes.field}  label="RUC"  type="text" name="ruc"  required onChange={handleInput} 
+                        inputProps={{maxlength:11}} 
+                        onKeyPress=
+                        {(e)=>{
+                            
+                            setTitulo(e.target.value)
+                            let regex = new RegExp(/^[0-9.]+$/);
+
+                            if(!regex.test(titulo) || !titulo === " "){
+                                e.target.value = e.target.value.substring(0, e.target.value.length - 1)
+                                setErrorTitulo(true);
+                                setLeyenda("Ruc no puede contener letras")
+                                //console.log("caracter")
+                            }else{
+                                setErrorTitulo(false);
+                                setLeyenda("");
+                                //console.log("numero")
+                            }
+                            
+                        }}
+                        error={errorTitulo}
+                        helperText={leyenda}
+                        variant="outlined"/>
                         </div>
                         <div>
-                        <TextField  className={classes.field}  label="Clave Sol" type="text" name="clavesol" required onChange={handleInput} />
+                        <TextField  className={classes.field}  label="Usuario SUNAT" type="text" name="clavesol" required onChange={handleInput} 
+                         inputProps={{maxlength:8}} 
+                         variant="outlined" />
                         </div>
                         <div>
-                        <TextField  className={classes.field} label="Contraseña"  type="password" name="solpass" required onChange={handleInput} />
+                        <TextField  className={classes.field} label="Contraseña SUNAT"  type="password" name="solpass" required onChange={handleInput}
+                         inputProps={{maxlength:12}} 
+                         variant="outlined" />
                         </div>
                         <Button variant="contained" className={classes.btn} onClick={handleSubmit} endIcon={<SaveIcon/>} >Guardar</Button>
                     </form> 
