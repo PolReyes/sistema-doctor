@@ -119,7 +119,13 @@ const Login = () => {
             setOpenAlertCode(true);
         });
     }
+    const [titulo,setTitulo] = React.useState("");
+    const [leyenda,setLeyenda] = React.useState("");
+    const [errorTitulo, setErrorTitulo]= React.useState(false);
 
+    const [numero,setNumero] = React.useState("");
+    const [leyendaNro,setLeyendaNro] = React.useState("");
+    const [errorNumero, setErrorNumero]= React.useState(false);
     return (
         <div className="App">
             <Container  fixed>
@@ -132,44 +138,91 @@ const Login = () => {
                     <form autoComplete="off" onSubmit={handleSubmit}>
                         <div className={classes.field}>
                             <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item xs={1}>
-                            {<AccountCircleIcon  fontSize="medium" color="primary"/> }
-                            </Grid>
+                            {/*<Grid item xs={1}>
+                            <AccountCircleIcon  fontSize="medium" color="primary"/> 
+                            </Grid>*/}
                             <Grid item xs={11}>
-                            <TextField style={{  width: '100%',marginLeft:'5px' }}  label="DNI" inputProps={{maxlength:'10'}}  type="text" name="userLogin" required onChange={handleInput} />
+                            <TextField 
+                            size="small" variant="filled" style={{  width: '100%' }}  label="DNI" 
+                            inputProps={{maxlength:8}} 
+                        onKeyPress=
+                        {(e)=>{
+                            
+                            setTitulo(e.target.value)
+                            let regex = new RegExp(/^[0-9]+$/i);
+
+                            if(!regex.test(titulo) || !titulo === " "){
+                                //e.target.value = e.target.value.substring(0, e.target.value.length - 1)
+                                setErrorTitulo(true);
+                                setLeyenda("Dni no puede contener letras")
+                                //console.log("caracter")
+                            }else{
+                                setErrorTitulo(false);
+                                setLeyenda("");
+                                //console.log("numero")
+                            }
+                            
+                        }}
+                        error={errorTitulo}
+                        helperText={leyenda}  
+                            type="text" name="userLogin" onChange={handleInput} />
                             </Grid>
                             </Grid>
                         </div>
                         <div className={classes.field}>
-                            <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item xs={1}>
+                            <Grid container spacing={1} >
+                            {/*<Grid item xs={1}>
                             {<HttpsIcon  fontSize="medium" color="primary"/> }
-                            </Grid>
+                            </Grid>*/}
                             <Grid item xs={8}>
-                            <TextField style={{  width: '100%',marginLeft:'5px' }} label="Celular"  type="text" inputProps={{maxlength:'9'}} name="phoneCode" onChange={handleInput} />
+                            <TextField 
+                            size="small" variant="filled" style={{  width: '100%' }} 
+                            label="Celular"  type="text" 
+                            inputProps={{maxlength:9}} 
+                        onKeyPress=
+                        {(e)=>{
+                            
+                            setNumero(e.target.value)
+                            let regex = new RegExp(/^[0-9]+$/);
+
+                            if(!regex.test(numero) || !numero === " "){
+                               // e.target.value = e.target.value.substring(0, e.target.value.length - 1)
+                                setErrorNumero(true);
+                                setLeyendaNro("Dni no puede contener letras")
+                                //console.log("caracter")
+                            }else{
+                                setErrorNumero(false);
+                                setLeyendaNro("");
+                                //console.log("numero")
+                            }
+                            
+                        }} 
+                        error={errorNumero}
+                        helperText={leyendaNro} 
+                            name="phoneCode" onChange={handleInput} />
                             </Grid>
                             <Grid item xs={3}>
-                            <Button variant="contained" className={classes.btn} style={{margin:'0px'}} onClick={handleCode}>SMS</Button>
+                            <Button variant="contained" color="primary" style={{marginTop:'7px',backgroundColor:'#00E1CD'}} onClick={handleCode}>SMS</Button>
                             </Grid>
                             </Grid>
                         </div>
                         <div className={classes.field}>
                             <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item xs={1}>
+                            {/*<Grid item xs={1}>
                             {<HttpsIcon  fontSize="medium" color="primary"/> }
-                            </Grid>
+                            </Grid>*/}
                             <Grid item xs={11}>
-                            <TextField style={{  width: '100%',marginLeft:'5px' }} label="Contraseña"  type="password" name="passLogin" inputProps={{maxlength:'6'}} required onChange={handleInput} />
+                            <TextField size="small" variant="filled" style={{  width: '100%' }} label="Contraseña"  type="password" name="passLogin" inputProps={{maxlength:'6'}} onChange={handleInput} />
                             </Grid>
                             </Grid>
                         
                         
                         </div>
                         <div>
-                        <Button variant="contained" type="submit" className={classes.btn} endIcon={<ArrowForwardIcon />}>Iniciar Sesión</Button>
+                        <Button variant="contained" type="submit" color="primary" className={classes.btn} endIcon={<ArrowForwardIcon />}>Iniciar Sesión</Button>
                 
                         <Link to="/register" className={classes.lnk}>
-                        <Button variant="contained" className={classes.btn} >Registrarse</Button>
+                        <Button variant="contained" className={classes.btn} color="primary" >Registrarse</Button>
                         </Link>
                         </div>
                         
