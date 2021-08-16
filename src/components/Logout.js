@@ -18,10 +18,10 @@ const Logout = () => {
     }
 
     useEffect(() => {
-        postLogout();
+        //postLogout();
         localStorage.removeItem("user");
         localStorage.removeItem('ttl');
-        //istory.push("/");
+        //history.push("/");
     }, [])
 
     return (

@@ -123,8 +123,10 @@ const Form = () => {
 
         axios.post(`http://${api}/api/registrofact`,dataForm)
         .then(response => {
-            console.log(response)
-            setDataFactura(response.data)
+            console.log(response);
+            setDataFactura(response.data);
+            setOpenAlert(true);
+            handleClose();
         });
     };
 
@@ -201,8 +203,7 @@ const [open, setOpen] = React.useState(false);
 const [openAlert, setOpenAlert] = React.useState(false);
 
   const handleClick = () => {
-    setOpenAlert(true);
-    handleSubmit()
+    handleSubmit();
   };
 
   const handleCloseAlert = (event, reason) => {
@@ -237,14 +238,14 @@ const [openAlert, setOpenAlert] = React.useState(false);
         }}
       />
     </div><br></br>
-    <form>
+    <form autoComplete="off" onSubmit={(e)=>{e.preventDefault();handleOpen();}}>
     <Typography variant="h6" className={classes.title}  >
              Concepto factura/recibo
      </Typography> 
      <div>
-    <TextField  className={classes.field} label="Concepto de pago"  type="text" name="concepto" onChange={handleInput} required />
+    <TextField className={classes.field} label="Concepto de pago" type="text" name="concepto" onChange={handleInput} required />
       </div>
-    <Button variant="contained" className={classes.btn} onClick={handleOpen}>Generar</Button> 
+    <Button variant="contained" className={classes.btn} type="submit">Generar</Button> 
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -325,8 +326,9 @@ const [openAlert, setOpenAlert] = React.useState(false);
             <Grid container>
               <Grid  item md={6} xs={12} style={{margin:'auto', textAlign:'center'}}>
                 <Typography variant="h7">
-                  <br></br>
-                  <strong>ESTO ES UN BORRADOR, NO TIENE NINGUNA VALIDEZ LEGAL</strong><br></br>
+                  <br/>
+                  <strong>ESTO ES UN BORRADOR, NO TIENE NINGUNA VALIDEZ LEGAL</strong><br/>
+                  <strong>No incluye posibles retenciones que SUNAT pueda realizar</strong><br/>
                   ¿Está seguro que desea emitir este RHE?<br></br>
                 </Typography>
                 <Button variant="contained" style={{margin:'1em'}} color="primary" onClick={handleClick} >Emitir recibo</Button> 

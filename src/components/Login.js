@@ -72,7 +72,7 @@ const Login = () => {
     };
     function Alert(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
-        }
+    }
 
     const handleCloseAlertCode = (event, reason) => {
         if (reason === 'clickaway') {
@@ -102,13 +102,17 @@ const Login = () => {
             //setUsuario(rsp);
             //console.log(usuario);
             //<Home usuario={response.data} />
-            if(response.data!=='Not Matched'){
+            if(response.data!=='Error'){
                 localStorage.setItem("user",JSON.stringify(response.data));
                 history.push("/home");
             }else{
+                //alert('Error');
                 setOpenAlertLogin(true);
             }
             //<Redirect to="/Home"></Redirect>;
+        }).catch(e => {
+            //setOpenAlertLogin(true);
+            console.log(e);
         });
     };
 
@@ -142,27 +146,30 @@ const Login = () => {
                             <AccountCircleIcon  fontSize="medium" color="primary"/> 
                             </Grid>*/}
                             <Grid item xs={11}>
-                            <TextField 
+                            <TextField required
                             size="small" variant="filled" style={{  width: '100%' }}  label="DNI" 
                             inputProps={{maxlength:8}} 
-                        onKeyPress=
-                        {(e)=>{
-                            
-                            setTitulo(e.target.value)
-                            let regex = new RegExp(/^[0-9]+$/i);
 
-                            if(!regex.test(titulo) || !titulo === " "){
-                                //e.target.value = e.target.value.substring(0, e.target.value.length - 1)
-                                setErrorTitulo(true);
-                                setLeyenda("Dni no puede contener letras")
-                                //console.log("caracter")
-                            }else{
-                                setErrorTitulo(false);
-                                setLeyenda("");
-                                //console.log("numero")
-                            }
-                            
-                        }}
+                            onKeyUp=
+                            {(e)=>{
+                                setTitulo(e.target.value)
+                                let regex = new RegExp(/^[0-9]+$/i);
+                                //console.log(e.target.value)
+                                //console.log(titulo)
+    
+                                if(!regex.test(e.target.value) || !e.target.value === " "){
+                                    //e.target.value = e.target.value.substring(0, e.target.value.length - 1)
+                                    setErrorTitulo(true);
+                                    setLeyenda("DNI solo puede contener números")
+                                    //console.log("caracter")
+                                }else{
+                                    setErrorTitulo(false);
+                                    setLeyenda("");
+                                    //console.log("numero")
+                                }
+    
+                            }}
+
                         error={errorTitulo}
                         helperText={leyenda}  
                             type="text" name="userLogin" onChange={handleInput} />
@@ -175,7 +182,7 @@ const Login = () => {
                             {<HttpsIcon  fontSize="medium" color="primary"/> }
                             </Grid>*/}
                             <Grid item xs={8}>
-                            <TextField 
+                            <TextField disabled
                             size="small" variant="filled" style={{  width: '100%' }} 
                             label="Celular"  type="text" 
                             inputProps={{maxlength:9}} 
@@ -183,12 +190,13 @@ const Login = () => {
                         {(e)=>{
                             
                             setNumero(e.target.value)
+                            console.log(e.target.value)
                             let regex = new RegExp(/^[0-9]+$/);
 
                             if(!regex.test(numero) || !numero === " "){
                                // e.target.value = e.target.value.substring(0, e.target.value.length - 1)
                                 setErrorNumero(true);
-                                setLeyendaNro("Dni no puede contener letras")
+                                setLeyendaNro("Celular no puede contener letras")
                                 //console.log("caracter")
                             }else{
                                 setErrorNumero(false);
@@ -202,7 +210,7 @@ const Login = () => {
                             name="phoneCode" onChange={handleInput} />
                             </Grid>
                             <Grid item xs={3}>
-                            <Button variant="contained" color="primary" style={{marginTop:'7px',backgroundColor:'#00E1CD'}} onClick={handleCode}>SMS</Button>
+                            <Button variant="contained" disabled color="primary" style={{marginTop:'7px',backgroundColor:'#00E1CD'}} onClick={handleCode}>SMS</Button>
                             </Grid>
                             </Grid>
                         </div>
@@ -212,7 +220,7 @@ const Login = () => {
                             {<HttpsIcon  fontSize="medium" color="primary"/> }
                             </Grid>*/}
                             <Grid item xs={11}>
-                            <TextField size="small" variant="filled" style={{  width: '100%' }} label="Contraseña"  type="password" name="passLogin" inputProps={{maxlength:'6'}} onChange={handleInput} />
+                            <TextField required size="small" variant="filled" style={{  width: '100%' }} label="Contraseña"  type="password" name="passLogin" inputProps={{maxlength:'6'}} onChange={handleInput} />
                             </Grid>
                             </Grid>
                         
@@ -235,7 +243,7 @@ const Login = () => {
                     </Snackbar>
                     <Snackbar open={openAlertLogin} autoHideDuration={6000} onClose={handleCloseAlertLogin}>
                         <Alert onClose={handleCloseAlertLogin} severity="error">
-                            Usuario o contraseña incorrectos
+                            Usuario y/o contraseña incorrectos
                         </Alert>
                     </Snackbar>
                   </Paper>

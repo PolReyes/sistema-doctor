@@ -186,7 +186,7 @@ const Home = () => {
     //const { userLogin, passLogin } = dataLogin;
 
     
-    axios.get(`http://${api}/api/filtros?doctor=${nm.id_doctor}&tipoPac=${dataFiltros.tipoPac ? dataFiltros.tipoPac : ''}&tipoCons=${dataFiltros.tipoCons? dataFiltros.tipoCons : ''}&tipoEst=${dataFiltros.tipoEst ? dataFiltros.tipoEst : ''}&finicio=${dataFiltros.finicio ? dataFiltros.finicio : ''}&ffin=${dataFiltros.ffin ? dataFiltros.ffin : ''}`)
+    axios.get(`http://${api}/api/filtros?doctor=${nm.ID_DOCTOR}&tipoPac=${dataFiltros.tipoPac ? dataFiltros.tipoPac : ''}&tipoCons=${dataFiltros.tipoCons? dataFiltros.tipoCons : ''}&tipoEst=${dataFiltros.tipoEst ? dataFiltros.tipoEst : ''}&finicio=${dataFiltros.finicio ? dataFiltros.finicio : ''}&ffin=${dataFiltros.ffin ? dataFiltros.ffin : ''}`)
     .then(response => {
       setDataPacientes(response.data)
       console.log(response.data)
@@ -280,11 +280,6 @@ const Home = () => {
               
               </Grid>
               </Grid>
-                 
-         
-          
-         
-      
      
             </form>
               </Box>
@@ -319,16 +314,16 @@ const Home = () => {
             {/*{nm.nombres} {nm.ap_pat} {nm.ap_mat}*/}
             {nm.APELLIDOS_NOMBRES}
             </TableCell>
-            <TableCell >{row.tipo_paciente == 'seguro' ? "RIMAC S.A.": ""}</TableCell>
+            <TableCell >{row.cliente}</TableCell>
             <TableCell >{row.fecha_atencion}</TableCell>
             <TableCell >{row.paciente}</TableCell>
-            <TableCell >{row.tipo_atencion == 'cita' ? "CONSULTA AMBULATORIA": row.tipo_atencion == 'procedimiento' ? "CIRUGIA": ""}</TableCell>
+            <TableCell >{row.concepto}</TableCell>
             {/*<TableCell align="right">{row.tipo_atencion}</TableCell>*/}
             {/*<TableCell align="right">{row.tipo_paciente}</TableCell>*/}
-            <TableCell >Medicentro</TableCell>
-            <TableCell >San Borja</TableCell>
+            <TableCell >{row.sede}</TableCell>
+            <TableCell >{row.proveedor}</TableCell>
             <TableCell >{row.estado}</TableCell>
-            <TableCell >{row.monto}</TableCell>
+            <TableCell >{row.importe_total}</TableCell>
           </TableRow>
           </>
         )): "Cargando..."
