@@ -137,35 +137,67 @@ const Form = () => {
         {
           field: 'paciente',
           headerName: 'Paciente',
-          width: 250,
+          width: 200,
           editable: false,
           sortable: false,
         },
         {
           field: 'fecha_atencion',
-          headerName: 'Atención',
-          width: 140,
+          headerName: 'Fecha atención',
+          width: 150,
           editable: false,
           sortable: false,
         },
         {
-          field: 'tipo_atencion',
+          field: 'concepto',
           headerName: 'Concepto',
-          width: 140,
+          width: 250,
           editable: false,
           sortable: false,
         },
         {
           field: 'estado',
           headerName: 'Estado',
-          width: 140,
+          width: 120,
+          editable: false,
+          sortable: false,
+        },
+        {
+          field: 'importe_total',
+          headerName: 'Monto',
+          width: 120,
+          editable: false,
+        },
+      ];
+
+      const columnsList = [
+        { id: 'id', headerName: 'ID', width: 50 },
+        { field: 'nom_doctor', headerName: 'Médico', width: 300 },
+        {
+          field: 'ruc',
+          headerName: 'RUC',
+          width: 150,
+          editable: false,
+          sortable: false,
+        },
+        {
+          field: 'concepto',
+          headerName: 'Concepto',
+          width: 250,
+          editable: false,
+          sortable: false,
+        },
+        {
+          field: 'fec_emision',
+          headerName: 'Fecha de emision',
+          width: 200,
           editable: false,
           sortable: false,
         },
         {
           field: 'monto',
           headerName: 'Monto',
-          width: 130,
+          width: 150,
           editable: false,
         },
       ];
@@ -229,10 +261,10 @@ const [openAlert, setOpenAlert] = React.useState(false);
         checkboxSelection
         disableSelectionOnClick
         onSelectionModelChange={(evt)=>{
-          setImporte(evt.reduce((sum, value) => (sum + dataPacientes[value].monto),0));
+          setImporte(evt.reduce((sum, value) => (sum + dataPacientes[value].importe_total),0));
           setDataForm({
             ...dataForm,
-            monto: parseFloat(evt.reduce((sum, value) => (sum + dataPacientes[value].monto),0)),
+            monto: parseFloat(evt.reduce((sum, value) => (sum + dataPacientes[value].importe_total),0)),
           });
         console.log(dataForm);
         }}
@@ -487,6 +519,15 @@ const [openAlert, setOpenAlert] = React.useState(false);
         <Box m={0} p={3} boxShadow={1}>
                   <h3>Facturas anteriores</h3>
                   <hr></hr>
+                  <div style={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                      rows={dataFacturas ? dataFacturas : []}
+                      columns={columnsList}
+                      pageSize={5}
+                      disableSelectionOnClick
+                    />
+                  </div>
+                  {/*
                   <TableContainer >
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead>
@@ -499,8 +540,8 @@ const [openAlert, setOpenAlert] = React.useState(false);
                             <TableCell>Monto</TableCell>
                         </TableRow>
                         </TableHead>
-                        <TableBody>
-                        {
+                  <TableBody>*/}
+                        {/*
                         dataFacturas?
                         dataFacturas.map((row,index) => (
                         <>
@@ -508,7 +549,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
                             <TableCell component="th" scope="row">
                             {row.ruc}
                             </TableCell>
-                            <TableCell>{/*{nm.nombres} {nm.ap_pat} {nm.ap_mat}*/}{nm.APELLIDOS_NOMBRES}</TableCell>
+                            <TableCell>{nm.APELLIDOS_NOMBRES}</TableCell>
                             <TableCell>{nm.DIRECCION}</TableCell>
                             <TableCell>{row.concepto}</TableCell>
                             <TableCell>{row.fec_emision}</TableCell>
@@ -519,7 +560,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
                     }       
                         </TableBody>
                     </Table>
-                 </TableContainer>
+                  </TableContainer>*/}
                 </Box>
                 </Grid>
 
