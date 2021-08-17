@@ -143,10 +143,10 @@ const Actualizar = () => {
                         {(e)=>{
                             
                             setTitulo(e.target.value)
-                            let regex = new RegExp(/^[0-9.]+$/);
+                            let regex = new RegExp(/^[0-9]+$/i);
 
                             if(!regex.test(titulo) || !titulo === " "){
-                                e.target.value = e.target.value.substring(0, e.target.value.length - 1)
+                                //e.target.value = e.target.value.substring(0, e.target.value.length - 1)
                                 setErrorTitulo(true);
                                 setLeyenda("Ruc no puede contener letras")
                                 //console.log("caracter")
@@ -171,7 +171,7 @@ const Actualizar = () => {
                          inputProps={{maxlength:12}} 
                          variant="outlined" />
                         </div>
-                        <Button variant="contained" className={classes.btn} onClick={handleSubmit} endIcon={<SaveIcon/>} >Guardar</Button>
+                        <Button variant="contained" color="primary" className={classes.btn} onClick={handleSubmit} endIcon={<SaveIcon/>} >Guardar</Button>
                     </form> 
                   </Paper>    
               </Grid>

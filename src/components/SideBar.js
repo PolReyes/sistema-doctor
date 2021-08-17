@@ -4,23 +4,29 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Hidden, IconButton} from '@material-ui/core';
-import Menu from './Menu';
+import { Grid, Hidden, IconButton, Menu, Typography} from '@material-ui/core';
+import MenuSideBar from './MenuSideBar';
 import logo from '../RpaLatam.png'
+import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
+import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const drawerWidth = 290;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    backgroundColor:'#fff'
+    //zIndex: theme.zIndex.drawer + 1,
+    //backgroundColor:'#fff',
+    backgroundColor:'#0061DF',
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+   
   },
   drawerPaper: {
     width: drawerWidth,
@@ -37,9 +43,14 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('sm')]: {
             display: 'none',
         },
+        
     },
     logo: {
         margin:'auto'},  
+    title: {
+          flexGrow: 1,
+          color:'#000'
+    },
     
 }));
 
@@ -47,33 +58,92 @@ const useStyles = makeStyles((theme) => ({
   
 
 const SideBar = () => {
+  const nm = JSON.parse(localStorage.getItem('user'));
     const classes = useStyles();
     const [abrir, setAbrir] = React.useState(false);
 
     const desplegar = () => {
     setAbrir(!abrir);
     };
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    
+    const openProfile = Boolean(anchorEl);
+    const handleMenuProfile = (event) => {
+    setAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseProfile = () => {
+    setAnchorEl(null);
+    };
+
     return (
         <div className={classes.root}>
-      <CssBaseline />
-      <AppBar className={classes.appBar}>
+      
+      <AppBar elevation={1} className={classes.appBar}>
             <Toolbar>
-                <IconButton
+            <Grid container style={{width:"100%",margin:"auto"}}>
+            <Grid item xs={2}>
+            <IconButton
                     color="inherit"
                     aria-label="menu"
                     className={classes.menuButton}
                     onClick={desplegar}
+                    style={{color:'#fff'}}
                 >
-                <MenuIcon color="primary" fontSize="large"/>
+                <MenuIcon fontSize="large"/>
                 </IconButton>
-                <img  className={classes.logo} src={logo} alt="LOGO"/>
+            </Grid>
+            <Grid item  md={6} xs={4}>
+              </Grid>    
+                
+                
+                <Grid item  md={4} xs={6}>
+            <div>
+              
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenuProfile}
+                style={{color:'#fff',float:'right'}}
+                
+              >
+                
+                <PermIdentityOutlinedIcon fontSize="large" />
+                <Typography variant="button" display="block">
+              Mi cuenta 
+            </Typography>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={openProfile}
+                onClose={handleCloseProfile}
+              >
+                <MenuItem onClick={handleCloseProfile}>Profile</MenuItem>
+                <MenuItem onClick={handleCloseProfile}>My account</MenuItem>
+              </Menu>
+            </div>
+            </Grid>
+            </Grid>
+               {/*<img  className={classes.logo} src={logo} alt="LOGO"/>*/}
         </Toolbar>
       </AppBar>
       <Hidden xsDown>
-      <Menu variant="permanent" open={true} />
+      <MenuSideBar variant="permanent" open={true} />
     </Hidden>
     <Hidden smUp>
-      <Menu variant="temporary" open={abrir} onClose={desplegar} />
+      <MenuSideBar variant="temporary" open={abrir} onClose={desplegar} />
     </Hidden>
      
       

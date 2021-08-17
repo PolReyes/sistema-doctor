@@ -18,6 +18,9 @@ import Register from './components/Register';
 const useStyles = makeStyles({
   container: {
     display: "flex"
+  },
+  bgColor:{
+    backgroundColor:'#000'
   }
 });
 
@@ -38,6 +41,7 @@ function App() {
           <Route path="/home" exact>
             <SideBar />
             <Home/>
+            
           </Route>
           <Route path="/cita" exact>
             <SideBar />
