@@ -173,9 +173,11 @@ const Actualizar = () => {
                         onKeyUp=
                         {(e)=>{
                             setTitulo(e.target.value)
+
                             let regex = new RegExp(/^[0-9]+$/);
 
                             if(!regex.test(e.target.value) || !e.target.value === " "){
+
                                 //e.target.value = e.target.value.substring(0, e.target.value.length - 1)
                                 setErrorTitulo(true);
                                 setLeyenda("RUC solo puede contener números")
@@ -200,6 +202,7 @@ const Actualizar = () => {
                          inputProps={{maxlength:12}} 
                          variant="outlined" />
                         </div>
+
                         <Button variant="contained" className={classes.btn} type="submit" endIcon={<SaveIcon/>} >Guardar</Button>
                     </form>
                     <Snackbar open={openAlertSend} autoHideDuration={6000} onClose={handleCloseAlertSend}>
@@ -212,6 +215,7 @@ const Actualizar = () => {
                             RUC incorrecto
                         </Alert>
                     </Snackbar>
+
                   </Paper>    
               </Grid>
             </Grid>

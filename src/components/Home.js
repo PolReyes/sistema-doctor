@@ -29,6 +29,7 @@ const StyledTableCell = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    //backgroundColor: '#000'
   },
   table: {
     minWidth: 360,
@@ -57,8 +58,10 @@ const useStyles = makeStyles((theme) => ({
     color:'#fff'
   },
   title2:{
+    //marginLeft:'20px',
     textAlign:'left',
-    color:'#0033A0',
+    fontWeight:'bold'
+    //color:'#0033A0',
   },
   btn:{
     backgroundColor:'#00E1CD',
@@ -92,7 +95,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '20px'
   },
   container:{
-    paddingTop: '70px'
+    paddingTop: '70px',
+    
   }
 }));
 
@@ -260,15 +264,16 @@ const Home = () => {
         
         
               <Grid item xs={12}>
-              <Box m={2} p={2} boxShadow={1} >
-              <Typography variant="h6" className={classes.title2}>
-              <strong>Reporte de servicios brindados</strong>
+              
+              <Box m={2} p={2} boxShadow={0} border={1} borderColor={'#0033A0'} >
+              <Typography  className={classes.title2}>
+              Reporte de servicios brindados
             </Typography>
             <form>
               <Grid container>
               <Grid item md={4} xs={12}>
                 
-                <FormControl className={classes.formControl}>
+                <FormControl variant="outlined" size="small" className={classes.formControl}>
                     <InputLabel id="label-tipo-paciente">Tipo de paciente</InputLabel>
                     <Select
                     labelId="label-tipo-paciente"
@@ -276,6 +281,7 @@ const Home = () => {
                     name="tipoPac"
                     value={tipoPaciente}
                     onChange={handleChangePaciente}
+                    label="Tipo de Paciente"
                     required
                     >
                     <MenuItem value={''}>Todos</MenuItem>
@@ -286,7 +292,7 @@ const Home = () => {
                 </Grid>
                 <Grid item md={4} xs={12}>
                 
-                <FormControl className={classes.formControl}>
+                <FormControl variant="outlined" size="small" className={classes.formControl}>
                   <InputLabel id="label-tipo-consulta">Tipo de atención</InputLabel>
                   <Select
                   labelId="label-tipo-consulta"
@@ -294,6 +300,7 @@ const Home = () => {
                   name="tipoCons"
                   value={tipoConsulta}
                   onChange={handleChangeConsulta}
+                  label="Tipo de Consulta"
                   >
                   <MenuItem value={''}>Todos</MenuItem>
                   <MenuItem value={'cita'}>Citas atendidas</MenuItem>
@@ -304,7 +311,7 @@ const Home = () => {
               </Grid>
               <Grid item md={4} xs={12}>
                 
-              <FormControl className={classes.formControl}>
+              <FormControl variant="outlined" size="small" className={classes.formControl}>
                   <InputLabel id="label-tipo-estado">Estado</InputLabel>
                   <Select
                   labelId="label-tipo-estado"
@@ -312,6 +319,7 @@ const Home = () => {
                   name="tipoEst"
                   value={tipoEstado}
                   onChange={handleChangeEstado}
+                  label="Tipo de Estado"
                   >
                   <MenuItem value={''}>Todos</MenuItem>
                   <MenuItem value={'Pendiente'}>Pendiente</MenuItem>
@@ -327,15 +335,17 @@ const Home = () => {
                 </Grid>
               
               <Grid item md={4} xs={12}>
-              <TextField inputProps={{min:"2021-07-01",max:"2021-08-09"}}  className={classes.formControl} type="date" name="finicio" value={finicio} onChange={handleChangeFinicio} />
+              <TextField inputProps={{min:"2021-07-01",max:"2021-08-09"}} variant="outlined" size="small" className={classes.formControl} type="date" name="finicio" value={finicio} onChange={handleChangeFinicio} />
                 </Grid>
                 <Grid item md={4} xs={12}>
+
                 <TextField  inputProps={{min:"2021-07-01",max:"2021-08-16"}} className={classes.formControl} type="date" name="ffin" value={ffin} onChange={handleChangeFfin} />
+
                
                   
               </Grid>
               <Grid item md={4} xs={12}>
-              <Button variant="contained"  onClick={handleSubmit}  className={classes.btn2}  endIcon={<SearchIcon />}>Buscar</Button>
+              <Button variant="contained" color="primary" onClick={handleSubmit}  className={classes.btn2}  endIcon={<SearchIcon />}>Buscar</Button>
               
               </Grid>
               </Grid>
@@ -344,6 +354,7 @@ const Home = () => {
               </Box>
               </Grid>
               <Grid item  xs={12}>
+
                 <Box m={2} p={3} boxShadow={1}>
 
                 <div style={{ height: 650, width: '100%' }}>
@@ -355,6 +366,7 @@ const Home = () => {
                     />
                   </div>
                   {/*
+
                   <TableContainer >
       <Table className={classes.table}  size="small" aria-label="simple table">
         <TableHead>
