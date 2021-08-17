@@ -255,6 +255,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
               <Box m={0} p={2} boxShadow={1} >
               <div style={{ height: 400, width: '100%' }}>
       <DataGrid
+      size="small"
         rows={dataPacientes ? dataPacientes : []}
         columns={columns}
         pageSize={5}
@@ -277,7 +278,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
      <div>
     <TextField className={classes.field} variant="outlined" label="Concepto de pago" type="text" name="concepto" onChange={handleInput} required />
       </div>
-    <Button variant="contained" className={classes.btn} type="submit">Generar</Button> 
+    <Button variant="contained" className={classes.btn} color="primary" type="submit">Generar</Button> 
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

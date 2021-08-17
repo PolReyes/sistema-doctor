@@ -138,7 +138,7 @@ const Home = () => {
   });
 
   const columns = [
-    { id: 'id', headerName: 'ID', width: 50 },
+    { id: 'id_doctor', headerName: 'ID', width: 50 },
     { field: 'nombre_medico', headerName: 'Médico', width: 200 },
     {
       field: 'cliente',
@@ -359,6 +359,7 @@ const Home = () => {
 
                 <div style={{ height: 650, width: '100%' }}>
                     <DataGrid
+                      
                       rows={dataPacientes ? dataPacientes : []}
                       columns={columns}
                       pageSize={10}

@@ -130,8 +130,8 @@ const SideBar = () => {
                 open={openProfile}
                 onClose={handleCloseProfile}
               >
-                <MenuItem onClick={handleCloseProfile}>Profile</MenuItem>
-                <MenuItem onClick={handleCloseProfile}>My account</MenuItem>
+                <MenuItem onClick={handleCloseProfile}>Perfil</MenuItem>
+                <MenuItem onClick={handleCloseProfile}>Salir</MenuItem>
               </Menu>
             </div>
             </Grid>
