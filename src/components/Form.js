@@ -275,7 +275,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
              Concepto factura/recibo
      </Typography> 
      <div>
-    <TextField className={classes.field} label="Concepto de pago" type="text" name="concepto" onChange={handleInput} required />
+    <TextField className={classes.field} variant="outlined" label="Concepto de pago" type="text" name="concepto" onChange={handleInput} required />
       </div>
     <Button variant="contained" className={classes.btn} type="submit">Generar</Button> 
       <Modal

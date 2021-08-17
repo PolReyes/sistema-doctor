@@ -112,7 +112,7 @@ const SideBar = () => {
                 
                 <PermIdentityOutlinedIcon fontSize="large" />
                 <Typography variant="button" display="block">
-              Mi cuenta 
+              Mi cuenta
             </Typography>
               </IconButton>
               <Menu

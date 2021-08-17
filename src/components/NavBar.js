@@ -30,7 +30,7 @@ const NavBar = () => {
                 <img  className={classes.logo} src={logo} alt="LOGO-RPA"/> 
                 </Grid>
         <Grid item md={4} xs={12} >
-        <img  style={{float:"right"}} className={classes.logo} src={logo1} alt="LOGO-CLINICA"/>
+        <img  style={{float:"right",marginTop:"5px"}} className={classes.logo} src={logo1} alt="LOGO-CLINICA"/>
         
                 </Grid>
                 <Grid item md={2}>

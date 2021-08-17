@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
     },
     button: {
+      marginTop:'10px',
+      marginBottom:'10px',
       marginRight: theme.spacing(1),
       backgroundColor:'#00E1CD',
         color:'#fff'
@@ -70,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
                       //onChange={handleInput}
                       id="first-name"
                       label="Nombres"
-                      variant="filled"
+                      variant="outlined"
                       placeholder="Ingrese su nombre"
                       margin="dense"
                       {...field}
@@ -101,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
                       //onChange={handleInput}
                       id="last-name"
                       label="Apellido Paterno"
-                      variant="filled"
+                      variant="outlined"
                       placeholder="Ingrese su apellido paternp"
                       margin="dense"
                       {...field}
@@ -129,7 +131,7 @@ const useStyles = makeStyles((theme) => ({
                       //onChange={handleInput}
                       id="ape-naterno"
                       label="Apellido Materno"
-                      variant="filled"
+                      variant="outlined"
                       placeholder="Ingrese apellido materno"
                       margin="dense"
                       {...field}
@@ -159,7 +161,7 @@ const useStyles = makeStyles((theme) => ({
                       label="Dni"
                       variant="outlined"
                       placeholder="Ingrese dni"
-                      variant="filled"
+                      variant="outlined"
                       margin="dense"
                       {...field}
                       error={Boolean(errors?.dni)}
@@ -188,7 +190,6 @@ const useStyles = makeStyles((theme) => ({
                       label="Correo"
                       variant="outlined"
                       placeholder="Ingrese correo electrónico"
-                      variant="filled"
                       margin="dense"
                       {...field}
                       error={Boolean(errors?.correo)}
@@ -216,7 +217,6 @@ const useStyles = makeStyles((theme) => ({
                       label="Teléfono"
                       variant="outlined"
                       placeholder="Ingrese teléfono"
-                      variant="filled"
                       margin="dense"
                       {...field}
                       error={Boolean(errors?.telefono)}
@@ -242,7 +242,6 @@ const useStyles = makeStyles((theme) => ({
                       label="Dirección"
                       variant="outlined"
                       placeholder="Ingrese dirección"
-                      variant="filled"
                       margin="dense"
                       {...field}
                       error={Boolean(errors?.direccion)}
@@ -269,7 +268,6 @@ const useStyles = makeStyles((theme) => ({
                       label="Especialidad"
                       variant="outlined"
                       placeholder="Ingrese especialidad"
-                      variant="filled"
                       margin="dense"
                       {...field}
                       error={Boolean(errors?.especialidad)}
@@ -320,7 +318,6 @@ const useStyles = makeStyles((theme) => ({
                       label="RUC"
                       variant="outlined"
                       placeholder="Ingrese ruc"
-                      variant="filled"
                       margin="dense"
                       {...field}
                       error={Boolean(errors?.ruc)}
@@ -343,7 +340,7 @@ const useStyles = makeStyles((theme) => ({
                       inputProps={{maxlength:8}}
                       id="usuario"
                       label="Usuario SUNAT"
-                      variant="filled"
+                      variant="outlined"
                       placeholder="Ingrese su usuario"
                       fullWidth
                       margin="dense"
@@ -369,7 +366,7 @@ const useStyles = makeStyles((theme) => ({
                       type="password"
                       id="pass"
                       label="Contraseña"
-                      variant="filled"
+                      variant="outlined"
                       placeholder="Ingrese su contraseña"
                       fullWidth
                       margin="dense"
@@ -414,7 +411,7 @@ const useStyles = makeStyles((theme) => ({
                       inputProps={{maxlength:8}}
                       id="user"
                       label="Usuario"
-                      variant="filled"
+                      variant="outlined"
                       placeholder="Ingrese usuario"
                       fullWidth
                       margin="dense"
@@ -440,7 +437,7 @@ const useStyles = makeStyles((theme) => ({
                       type="password"
                       id="clave"
                       label="Contraseña"
-                      variant="filled"
+                      variant="outlined"
                       placeholder="Ingrese contraseña"
                       fullWidth
                       margin="dense"
@@ -737,9 +734,11 @@ const Register = () => {
                   <form autoComplete="off" onSubmit={methods.handleSubmit(handleNext)}>
                     {getStepContent(activeStep)}
                     <Button
+                    variant="contained"
                       className={classes.button}
                       disabled={activeStep === 0}
                       onClick={handleBack}
+                      color="primary"
                     >
                       Atrás
                     </Button>

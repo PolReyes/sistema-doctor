@@ -36,7 +36,8 @@ const useStyles = makeStyles({
     },
     btn:{
         backgroundColor:'#00E1CD',
-        margin:'30px',
+        marginTop:'30px',
+        marginBottom:'5px',
         color:'#fff'
     },
     lnk:{
@@ -147,7 +148,7 @@ const Login = () => {
                             </Grid>*/}
                             <Grid item xs={11}>
                             <TextField required
-                            size="small" variant="filled" style={{  width: '100%' }}  label="DNI" 
+                            size="small" variant="outlined" style={{  width: '100%' }}  label="DNI" 
                             inputProps={{maxlength:8}} 
 
                             onKeyUp=
@@ -183,7 +184,7 @@ const Login = () => {
                             </Grid>*/}
                             <Grid item xs={8}>
                             <TextField disabled
-                            size="small" variant="filled" style={{  width: '100%' }} 
+                            size="small" variant="outlined" style={{  width: '100%' }} 
                             label="Celular"  type="text" 
                             inputProps={{maxlength:9}} 
                         onKeyPress=
@@ -220,7 +221,7 @@ const Login = () => {
                             {<HttpsIcon  fontSize="medium" color="primary"/> }
                             </Grid>*/}
                             <Grid item xs={11}>
-                            <TextField required size="small" variant="filled" style={{  width: '100%' }} label="Contraseña"  type="password" name="passLogin" inputProps={{maxlength:'6'}} onChange={handleInput} />
+                            <TextField required size="small" variant="outlined" style={{  width: '100%' }} label="Contraseña"  type="password" name="passLogin" inputProps={{maxlength:'6'}} onChange={handleInput} />
                             </Grid>
                             </Grid>
                         
@@ -229,12 +230,12 @@ const Login = () => {
                         <div>
                         <Button variant="contained" type="submit" color="primary" className={classes.btn} endIcon={<ArrowForwardIcon />}>Iniciar Sesión</Button>
                 
-                        <Link to="/register" className={classes.lnk}>
-                        <Button variant="contained" className={classes.btn} color="primary" >Registrarse</Button>
-                        </Link>
+                        
                         </div>
                         
-                        
+                        <Link to="/register" className={classes.lnk}>
+                        <Button  color="primary" >Registrarse</Button>
+                        </Link>
                     </form>
                     <Snackbar open={openAlertCode} autoHideDuration={6000} onClose={handleCloseAlertCode}>
                         <Alert onClose={handleCloseAlertCode} severity="info">
