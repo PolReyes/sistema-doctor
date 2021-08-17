@@ -11,6 +11,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import InfoIcon from '@material-ui/icons/Info';
 import { useHistory } from "react-router-dom";
 import ClearIcon from '@material-ui/icons/Clear';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import '../App.css';
 import api from '../api';
 
@@ -92,6 +94,13 @@ const Actualizar = () => {
     const classes = useStyles();
 
     const [dataUpdate, setDataUpdate] = useState({});
+
+    const [openAlertSend, setOpenAlertSend] = useState(false);
+    const [openAlertError, setOpenAlertError] = useState(false);
+
+    function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
   
       const handleInput = (event) => {
         const { value, name } = event.target;
@@ -101,14 +110,36 @@ const Actualizar = () => {
             [name]: value,
         });
       };
-      let history = useHistory(); 
+      let history = useHistory();
 
-      const handleSubmit = () => {
+      const handleCloseAlertSend = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpenAlertSend(false);
+      };
+
+      const handleCloseAlertError = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpenAlertError(false);
+      };
+
+      const handleSubmit = (e) => {
+          
+          e.preventDefault()
+          //console.log(e)
         axios.post(`http://${api}/api/actruc`,dataUpdate)
         .then(response => {
-            console.log(dataUpdate);
-            console.log(response);
-            history.push("/home");
+            //console.log(dataUpdate);
+            if(response.data!="Error"){
+                setOpenAlertSend(true);
+                e.target.reset();
+            }else{
+                setOpenAlertError(true);
+            }
+            //history.push("/home");
         });
         
     };
@@ -122,7 +153,7 @@ const Actualizar = () => {
               <Grid item md={12} xs={12}><br></br><br></br>
                   <Paper elevation={2} className={classes.root}>
                   
-                    <form className={classes.form} noValidate autoComplete="off">
+                    <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
                     
                     <Typography  variant="h5" color="primary" className={classes.title} >
                     {<InfoIcon style={{  verticalAlign: 'middle' }} fontSize="large"/> } Actualiza tus datos 
@@ -139,40 +170,52 @@ const Actualizar = () => {
                         <div>
                         <TextField id="campo" className={classes.field}  label="RUC"  type="text" name="ruc"  required onChange={handleInput} 
                         inputProps={{maxlength:11}} 
-                        onKeyPress=
+                        onKeyUp=
                         {(e)=>{
-                            
                             setTitulo(e.target.value)
-                            let regex = new RegExp(/^[0-9]+$/i);
 
-                            if(!regex.test(titulo) || !titulo === " "){
+                            let regex = new RegExp(/^[0-9]+$/);
+
+                            if(!regex.test(e.target.value) || !e.target.value === " "){
+
                                 //e.target.value = e.target.value.substring(0, e.target.value.length - 1)
                                 setErrorTitulo(true);
-                                setLeyenda("Ruc no puede contener letras")
+                                setLeyenda("RUC solo puede contener números")
                                 //console.log("caracter")
                             }else{
                                 setErrorTitulo(false);
                                 setLeyenda("");
                                 //console.log("numero")
                             }
-                            
                         }}
                         error={errorTitulo}
                         helperText={leyenda}
                         variant="outlined"/>
                         </div>
                         <div>
-                        <TextField  className={classes.field}  label="Usuario SUNAT" type="text" name="clavesol" required onChange={handleInput} 
+                        <TextField className={classes.field}  label="Usuario SUNAT" type="text" name="usuariosunat" required onChange={handleInput} 
                          inputProps={{maxlength:8}} 
                          variant="outlined" />
                         </div>
                         <div>
-                        <TextField  className={classes.field} label="Contraseña SUNAT"  type="password" name="solpass" required onChange={handleInput}
+                        <TextField  className={classes.field} label="Contraseña SUNAT"  type="password" name="clavesunat" required onChange={handleInput}
                          inputProps={{maxlength:12}} 
                          variant="outlined" />
                         </div>
-                        <Button variant="contained" color="primary" className={classes.btn} onClick={handleSubmit} endIcon={<SaveIcon/>} >Guardar</Button>
-                    </form> 
+
+                        <Button variant="contained" className={classes.btn} type="submit" endIcon={<SaveIcon/>} >Guardar</Button>
+                    </form>
+                    <Snackbar open={openAlertSend} autoHideDuration={6000} onClose={handleCloseAlertSend}>
+                        <Alert onClose={handleCloseAlertSend} severity="success">
+                            Información actualizada
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar open={openAlertError} autoHideDuration={6000} onClose={handleCloseAlertError}>
+                        <Alert onClose={handleCloseAlertError} severity="error">
+                            RUC incorrecto
+                        </Alert>
+                    </Snackbar>
+
                   </Paper>    
               </Grid>
             </Grid>

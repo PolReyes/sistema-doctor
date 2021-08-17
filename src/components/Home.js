@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import axios from 'axios';
+import { DataGrid } from '@material-ui/data-grid';
 import SearchIcon from '@material-ui/icons/Search';
 import api from '../api';
 
@@ -135,6 +136,64 @@ const Home = () => {
     const [dataFiltros, setDataFiltros] = useState({
       tipoPac: "",
   });
+
+  const columns = [
+    { id: 'id', headerName: 'ID', width: 50 },
+    { field: 'nombre_medico', headerName: 'Médico', width: 200 },
+    {
+      field: 'cliente',
+      headerName: 'Cliente',
+      width: 200,
+      editable: false,
+      sortable: false,
+    },
+    {
+      field: 'fecha_atencion',
+      headerName: 'Fecha atención',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'paciente',
+      headerName: 'Paciente',
+      width: 200,
+      editable: false,
+      sortable: false,
+    },
+    {
+      field: 'concepto',
+      headerName: 'Concepto',
+      width: 250,
+      editable: false,
+      sortable: false,
+    },
+    {
+      field: 'sede',
+      headerName: 'Sede',
+      width: 150,
+      editable: false,
+      sortable: false,
+    },{
+      field: 'proveedor',
+      headerName: 'Proveedor',
+      width: 120,
+      editable: false,
+      sortable: false,
+    },
+    {
+      field: 'estado',
+      headerName: 'Estado',
+      width: 100,
+      editable: false,
+      sortable: false,
+    },
+    {
+      field: 'importe_total',
+      headerName: 'Monto',
+      width: 120,
+      editable: false,
+    },
+  ];
   
   const handleChangePaciente = (event) => {
     setTipoPaciente(event.target.value);
@@ -190,7 +249,7 @@ const Home = () => {
     //const { userLogin, passLogin } = dataLogin;
 
     
-    axios.get(`http://${api}/api/filtros?doctor=${nm.id_doctor}&tipoPac=${dataFiltros.tipoPac ? dataFiltros.tipoPac : ''}&tipoCons=${dataFiltros.tipoCons? dataFiltros.tipoCons : ''}&tipoEst=${dataFiltros.tipoEst ? dataFiltros.tipoEst : ''}&finicio=${dataFiltros.finicio ? dataFiltros.finicio : ''}&ffin=${dataFiltros.ffin ? dataFiltros.ffin : ''}`)
+    axios.get(`http://${api}/api/filtros?doctor=${nm.ID_DOCTOR}&tipoPac=${dataFiltros.tipoPac ? dataFiltros.tipoPac : ''}&tipoCons=${dataFiltros.tipoCons? dataFiltros.tipoCons : ''}&tipoEst=${dataFiltros.tipoEst ? dataFiltros.tipoEst : ''}&finicio=${dataFiltros.finicio ? dataFiltros.finicio : ''}&ffin=${dataFiltros.ffin ? dataFiltros.ffin : ''}`)
     .then(response => {
       setDataPacientes(response.data)
       console.log(response.data)
@@ -279,7 +338,9 @@ const Home = () => {
               <TextField inputProps={{min:"2021-07-01",max:"2021-08-09"}} variant="outlined" size="small" className={classes.formControl} type="date" name="finicio" value={finicio} onChange={handleChangeFinicio} />
                 </Grid>
                 <Grid item md={4} xs={12}>
-                <TextField  inputProps={{max:"2021-08-09"}} variant="outlined" size="small" className={classes.formControl} type="date" name="ffin" value={ffin} onChange={handleChangeFfin} />
+
+                <TextField  inputProps={{min:"2021-07-01",max:"2021-08-16"}} className={classes.formControl} type="date" name="ffin" value={ffin} onChange={handleChangeFfin} />
+
                
                   
               </Grid>
@@ -288,17 +349,24 @@ const Home = () => {
               
               </Grid>
               </Grid>
-                 
-         
-          
-         
-      
      
             </form>
               </Box>
               </Grid>
               <Grid item  xs={12}>
-                <Box m={2} p={3} boxShadow={2}>
+
+                <Box m={2} p={3} boxShadow={1}>
+
+                <div style={{ height: 650, width: '100%' }}>
+                    <DataGrid
+                      rows={dataPacientes ? dataPacientes : []}
+                      columns={columns}
+                      pageSize={10}
+                      disableSelectionOnClick
+                    />
+                  </div>
+                  {/*
+
                   <TableContainer >
       <Table className={classes.table}  size="small" aria-label="simple table">
         <TableHead>
@@ -308,35 +376,30 @@ const Home = () => {
             <StyledTableCell >Fecha atención</StyledTableCell>
             <StyledTableCell >Paciente</StyledTableCell>
             <StyledTableCell >Concepto</StyledTableCell>
-            {/*<TableCell align="right">Tipo procedimiento</TableCell>*/}
-            {/*<TableCell align="right">Tipo paciente</TableCell>*/}
             <StyledTableCell >Sede</StyledTableCell>
             <StyledTableCell >Proveedor</StyledTableCell>
             <StyledTableCell >Estado</StyledTableCell>
             <StyledTableCell >Monto</StyledTableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+                  <TableBody>*/}
         
-          {
+          {/*
           dataPacientes?
         dataPacientes.map((row,index) => (
           <>
            <TableRow key={index}>
             <TableCell component="th" scope="row">
-            {/*{nm.nombres} {nm.ap_pat} {nm.ap_mat}*/}
             {nm.APELLIDOS_NOMBRES}
             </TableCell>
-            <TableCell >{row.tipo_paciente == 'seguro' ? "RIMAC S.A.": ""}</TableCell>
+            <TableCell >{row.cliente}</TableCell>
             <TableCell >{row.fecha_atencion}</TableCell>
             <TableCell >{row.paciente}</TableCell>
-            <TableCell >{row.tipo_atencion == 'cita' ? "CONSULTA AMBULATORIA": row.tipo_atencion == 'procedimiento' ? "CIRUGIA": ""}</TableCell>
-            {/*<TableCell align="right">{row.tipo_atencion}</TableCell>*/}
-            {/*<TableCell align="right">{row.tipo_paciente}</TableCell>*/}
-            <TableCell >Medicentro</TableCell>
-            <TableCell >San Borja</TableCell>
+            <TableCell >{row.concepto}</TableCell>
+            <TableCell >{row.sede}</TableCell>
+            <TableCell >{row.proveedor}</TableCell>
             <TableCell >{row.estado}</TableCell>
-            <TableCell >{row.monto}</TableCell>
+            <TableCell >{row.importe_total}</TableCell>
           </TableRow>
           </>
         )): "Cargando..."
@@ -352,7 +415,7 @@ const Home = () => {
           </TableRow>
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer>*/}
                 </Box>
               </Grid>
               </Grid>
