@@ -7,7 +7,7 @@ const Logout = () => {
     const nm = JSON.parse(localStorage.getItem('user'));
 
     const dataLogout = {
-        idLogout: `${nm.ID_DOCTOR}`,
+        idLogout: `${nm?nm.ID_DOCTOR:""}`,
     };
 
     const postLogout = async () => {

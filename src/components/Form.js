@@ -66,6 +66,7 @@ const Form = () => {
     const [dataFactura, setDataFactura] = useState({});
 
     const [dataFacturas, setDataFacturas] = useState([]);
+    const [selectionModel, setSelectionModel] = useState([]);
 
     let ids = [];
 
@@ -79,17 +80,22 @@ const Form = () => {
     const total = parseInt(localStorage.getItem('ttl'));
     const [dataForm, setDataForm] = useState({
         ruc: `${nm.RUC}`,
-        concepto: "",
+        concepto: "Servicios médicos",
         clavesol: "",
         pass: "",
         monto: parseFloat(importe)
     });
 
+    const getFacturas = () => {
+      axios.get(`http://${api}/api/facturas?ruc=${nm.RUC}`)
+        .then(response => {
+          setDataFacturas(response.data);
+        });
+    }
+
 
     const getConsultas = async () => {
-        const res = await axios.get(`http://${api}/api/facturas?ruc=${nm.RUC}`)
-        setDataFacturas(res.data)
-        console.log(res)
+      getFacturas()
         const resp = await axios.get(`http://${api}/api/montos?doctor=${nm.ID_DOCTOR}`)
         setDataPagos(resp.data)
 
@@ -104,6 +110,10 @@ const Form = () => {
           getConsultas();
         },[]);
 
+        /*useEffect(() => {
+          getFacturas();
+        },[dataFacturas]);*/
+
     
     const handleInput = (event) => {
         const { value, name } = event.target;
@@ -116,24 +126,32 @@ const Form = () => {
         });
     };
     
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
         //const { userLogin, passLogin } = dataLogin;
-
-        console.log(dataForm)
+        e.preventDefault();
+        console.log(dataForm);
 
         axios.post(`http://${api}/api/registrofact`,dataForm)
         .then(response => {
             console.log(response);
             setDataFactura(response.data);
             setOpenAlert(true);
+            e.target.reset();
+            setImporte(0);
+            setDataForm({
+              ...dataForm,
+              monto: parseFloat(0),
+            });
+            setSelectionModel([]);
             handleClose();
+            getFacturas();
         });
     };
 
     
       const columns = [
         { id: 'id', headerName: 'ID', width: 50 },
-        { field: 'nom_doctor', headerName: 'Médico', width: 200 },
+        { field: 'nombre_medico', headerName: 'Médico', width: 200 },
         {
           field: 'paciente',
           headerName: 'Paciente',
@@ -234,9 +252,9 @@ const [open, setOpen] = React.useState(false);
   }
 const [openAlert, setOpenAlert] = React.useState(false);
 
-  const handleClick = () => {
-    handleSubmit();
-  };
+  /*const handleClick = (e) => {
+    handleSubmit(e);
+  };*/
 
   const handleCloseAlert = (event, reason) => {
     if (reason === 'clickaway') {
@@ -262,23 +280,29 @@ const [openAlert, setOpenAlert] = React.useState(false);
         checkboxSelection
         disableSelectionOnClick
         onSelectionModelChange={(evt)=>{
+          //console.log(evt)
+          //evt = []
+          //console.log(evt)
+          setSelectionModel(evt);
           setImporte(evt.reduce((sum, value) => (sum + dataPacientes[value].importe_total),0));
           setDataForm({
             ...dataForm,
             monto: parseFloat(evt.reduce((sum, value) => (sum + dataPacientes[value].importe_total),0)),
           });
         console.log(dataForm);
+        console.log("Model: ",selectionModel)
         }}
+        selectionModel={selectionModel}
       />
     </div><br></br>
-    <form autoComplete="off" onSubmit={(e)=>{e.preventDefault();handleOpen();}}>
+    <form autoComplete="off" id="fr1" onSubmit={handleSubmit}>
     <Typography variant="h6" className={classes.title}  >
              Concepto factura/recibo
      </Typography> 
      <div>
-    <TextField className={classes.field} variant="outlined" label="Concepto de pago" type="text" name="concepto" onChange={handleInput} required />
+    <TextField className={classes.field} variant="outlined" label="Concepto de pago" value={dataForm.concepto} type="text" name="concepto" onChange={handleInput} required />
       </div>
-    <Button variant="contained" className={classes.btn} color="primary" type="submit">Generar</Button> 
+    <Button variant="contained" className={classes.btn} color="primary" onClick={handleOpen}>Generar</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -364,7 +388,7 @@ const [openAlert, setOpenAlert] = React.useState(false);
                   <strong>No incluye posibles retenciones que SUNAT pueda realizar</strong><br/>
                   ¿Está seguro que desea emitir este RHE?<br></br>
                 </Typography>
-                <Button variant="contained" style={{margin:'1em'}} color="primary" onClick={handleClick} >Emitir recibo</Button> 
+                <Button variant="contained" style={{margin:'1em'}} color="primary" type="submit" form="fr1" >Emitir recibo</Button> 
                 <Button variant="contained" style={{margin:'1em'}} onClick={handleClose} color="secondary" >Volver</Button> 
             
               </Grid>

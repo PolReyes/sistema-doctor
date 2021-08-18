@@ -641,7 +641,8 @@ const Register = () => {
     return skipped.has(step);
   };
   
-  const handleNext = () => {
+  const handleNext = (data) => {
+    console.log(data);
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());

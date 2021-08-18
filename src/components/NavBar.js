@@ -23,22 +23,27 @@ const NavBar = () => {
         <AppBar position="fixed" className={classes.bgColor}> 
         
         <Toolbar>
+        
         <Grid container style={{width:"100%",margin:"auto"}}>
+        
                 <Grid item md={2}>
                 </Grid>
+                
                 <Grid item md={4} xs={12}>
-                <img  className={classes.logo} src={logo} alt="LOGO-RPA"/> 
+                <Link to="/">
+                <img  className={classes.logo} src={logo} alt="LOGO-RPA"/>
+                </Link>
                 </Grid>
         <Grid item md={4} xs={12} >
+        <Link to="/">
         <img  style={{float:"right",marginTop:"5px"}} className={classes.logo} src={logo1} alt="LOGO-CLINICA"/>
-        
+        </Link>
                 </Grid>
                 <Grid item md={2}>
                 </Grid>
-        
-                
                 
             </Grid>
+            
         </Toolbar>
         
         </AppBar>

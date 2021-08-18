@@ -56,7 +56,9 @@ const MenuSideBar = (props) => {
         onClose={props.onClose ? props.onClose : null}
       >
           <div className={classes.toolbar}>
+          <Link to="/">
           <img  className={classes.logo} src={logo} alt="LOGO"/>
+          </Link>
           </div>
             <div className={classes.root}>
           <Divider/>  

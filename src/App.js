@@ -1,5 +1,6 @@
 import './App.css';
-import React from 'react'
+import React from 'react';
+import { useState } from "react";
 import NavBar from './components/NavBar';
 import Login from './components/Login';
 import Home  from './components/Home';
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 
 function App() {
   const classes = useStyles();
+
   return (
     <div className={classes.container}>
       <Router>
@@ -36,12 +38,11 @@ function App() {
           </Route>
           <Route path="/register" exact>
             <NavBar/>
-            <Register/>
+            <Register />
           </Route>
           <Route path="/home" exact>
             <SideBar />
             <Home/>
-            
           </Route>
           <Route path="/cita" exact>
             <SideBar />
