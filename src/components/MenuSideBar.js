@@ -126,7 +126,7 @@ const MenuSideBar = (props) => {
             <UpdateIcon style={{margin:'auto'}}/>
             </ListItemIcon>
             <ListItemText>
-                <strong>Actualizar Datos</strong>
+                <strong>Actualizar Datos SUNAT</strong>
             </ListItemText>
             </ListItem>
             </Link>

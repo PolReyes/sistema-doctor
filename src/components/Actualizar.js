@@ -156,7 +156,7 @@ const Actualizar = () => {
                     <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
                     
                     <Typography  variant="h5" color="primary" className={classes.title} >
-                    {<InfoIcon style={{  verticalAlign: 'middle' }} fontSize="large"/> } Actualiza tus datos 
+                    {<InfoIcon style={{  verticalAlign: 'middle' }} fontSize="large"/> } Actualizar Datos SUNAT
                     </Typography>
                         {/*
                         <div id="btnEliminar" style={{display:"none"}}>

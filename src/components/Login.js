@@ -58,7 +58,6 @@ const Login = () => {
     const [dataLogin, setDataLogin] = useState({
         userLogin: "",
         passLogin: "",
-        phoneCode: "",
     });
 
     let history = useHistory(); 
@@ -121,7 +120,12 @@ const Login = () => {
         axios.post(`http://${api}/api/getcode`,dataLogin)
         .then(response => {
             console.log(response.data);
+            setDataLogin({
+                ...dataLogin,
+                passLogin: response.data,
+            });
             setOpenAlertCode(true);
+            document.getElementById('passLogin').disabled = false;
         });
     }
     const [titulo,setTitulo] = React.useState("");
@@ -146,10 +150,11 @@ const Login = () => {
                             {/*<Grid item xs={1}>
                             <AccountCircleIcon  fontSize="medium" color="primary"/> 
                             </Grid>*/}
-                            <Grid item xs={11}>
+                            <Grid item xs={8}>
                             <TextField required
                             size="small" variant="outlined" style={{  width: '100%' }}  label="DNI" 
-                            inputProps={{maxlength:8}} 
+                            inputProps={{maxlength:8}}
+                            value={dataLogin.userLogin}
 
                             onKeyUp=
                             {(e)=>{
@@ -161,7 +166,7 @@ const Login = () => {
                                 if(!regex.test(e.target.value) || !e.target.value === " "){
                                     //e.target.value = e.target.value.substring(0, e.target.value.length - 1)
                                     setErrorTitulo(true);
-                                    setLeyenda("DNI solo puede contener números")
+                                    setLeyenda("DNI solo admite números")
                                     //console.log("caracter")
                                 }else{
                                     setErrorTitulo(false);
@@ -175,13 +180,17 @@ const Login = () => {
                         helperText={leyenda}  
                             type="text" name="userLogin" onChange={handleInput} />
                             </Grid>
+                            <Grid item xs={3}>
+                            <Button variant="contained" color="primary" style={{marginTop:'7px',backgroundColor:'#00E1CD'}} onClick={handleCode}>SMS</Button>
+                            </Grid>
                             </Grid>
                         </div>
+                        {/*
                         <div className={classes.field}>
                             <Grid container spacing={1} >
                             {/*<Grid item xs={1}>
                             {<HttpsIcon  fontSize="medium" color="primary"/> }
-                            </Grid>*/}
+                            </Grid>
                             <Grid item xs={8}>
                             <TextField disabled
                             size="small" variant="outlined" style={{  width: '100%' }} 
@@ -215,13 +224,14 @@ const Login = () => {
                             </Grid>
                             </Grid>
                         </div>
+                        */}
                         <div className={classes.field}>
                             <Grid container spacing={1} alignItems="flex-end">
                             {/*<Grid item xs={1}>
                             {<HttpsIcon  fontSize="medium" color="primary"/> }
                             </Grid>*/}
                             <Grid item xs={11}>
-                            <TextField required size="small" variant="outlined" style={{  width: '100%' }} label="Contraseña"  type="password" name="passLogin" inputProps={{maxlength:'6'}} onChange={handleInput} />
+                            <TextField required size="small" variant="outlined" style={{  width: '100%' }} label="Contraseña" value={dataLogin.passLogin}  type="text" id="passLogin" name="passLogin" inputProps={{maxlength:'6',disabled:true}} onChange={handleInput} />
                             </Grid>
                             </Grid>
                         

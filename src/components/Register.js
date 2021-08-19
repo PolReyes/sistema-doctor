@@ -13,7 +13,10 @@ import ClearIcon from '@material-ui/icons/Clear';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import api from '../api';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import {useForm, Controller, FormProvider, useFormContext} from "react-hook-form";
+import Clear from '@material-ui/icons/Clear';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,17 +40,21 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
   function getSteps() {
-    return ['Datos personales', 'Datos sunat', 'Datos de usuario'];
+    //return ['Verificacion','Datos personales', 'Datos sunat', 'Datos de usuario'];
+    return ['Identificación','Verificación','Datos personales', 'Datos SUNAT'];
   }
   
-  const DatosForm = () => {
+  const DatosForm = ({dataRegister}) => {
     const {
-      control,
+      control, setValue,
       formState: { errors },
     } = useFormContext();
-    console.log(errors);
-    return (
+
+
+    //console.log(errors);
+    return (   
       <>
+      {/*console.log("Reg",dataRegister)*/}
       <Grid container>
         <Grid item md={12} xs={12} style={{width:"100%",margin:"auto"}}>
           <Typography variant="h5" color="primary">
@@ -71,10 +78,13 @@ const useStyles = makeStyles((theme) => ({
                     <TextField  style={{margin:"10px",width:"90%"}}
                       //onChange={handleInput}
                       id="first-name"
-                      label="Nombres"
+                      label="Apellidos y nombres"
                       variant="outlined"
-                      placeholder="Ingrese su nombre"
-                      margin="dense"
+                      placeholder="Ingrese sus apellidos y nombres"
+                      disabled
+                      margin="dense"                      
+                      //inputProps={{defaultValue:dataRegister.APELLIDOS_NOMBRES}}
+                      //value={dataRegister.APELLIDOS_NOMBRES}
                       {...field}
                       error={Boolean(errors?.nombres)}
                       helperText={
@@ -86,7 +96,9 @@ const useStyles = makeStyles((theme) => ({
                     />
                   )}
                 />
+                {/*setValue("nombres",dataRegister?dataRegister.APELLIDOS_NOMBRES:"")*/}
               </Grid>
+              {/*
               <Grid item md={6} xs={12}>
                 <Controller
                   control={control}
@@ -112,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
                     />
                   )}
                 />
-              </Grid>
+                  </Grid>
             </Grid>
             <Grid container>
               <Grid item md={6} xs={12} >
@@ -140,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
                     /> 
                   )}
                 />
-              </Grid>
+                  </Grid>*/}
               <Grid item md={6} xs={12}>
                 <Controller
                   control={control}
@@ -160,15 +172,18 @@ const useStyles = makeStyles((theme) => ({
                       id="dni"
                       label="Dni"
                       variant="outlined"
+                      disabled
                       placeholder="Ingrese dni"
                       variant="outlined"
                       margin="dense"
+                      //value={dataRegister.DNI}
                       {...field}
                       error={Boolean(errors?.dni)}
                       helperText={errors.dni?.message}
                     />
                   )}
                 />
+                {/*setValue("dni",dataRegister.DNI)*/}
               </Grid>
             </Grid>
             <Grid container>
@@ -197,6 +212,7 @@ const useStyles = makeStyles((theme) => ({
                     />
                   )}
                 />
+                {/*setValue("correo",dataRegister.CORREO)*/}
               </Grid>
               <Grid item md={6} xs={12}>
                 <Controller
@@ -224,6 +240,7 @@ const useStyles = makeStyles((theme) => ({
                     />
                   )}
                 />
+                {/*setValue("telefono",dataRegister.TELEFONO)*/}
               </Grid>
             </Grid>
             <Grid container>
@@ -249,7 +266,9 @@ const useStyles = makeStyles((theme) => ({
                     />
                   )}
                 />
+                {/*setValue("direccion",dataRegister.DIRECCION)*/}
               </Grid>
+              {/*
               <Grid item md={6} xs={12}>
                 <Controller
                   control={control}
@@ -275,7 +294,7 @@ const useStyles = makeStyles((theme) => ({
                     />
                   )}
                 />
-              </Grid>
+                  </Grid>*/}
             </Grid>
           </Box>
         </Grid>
@@ -331,22 +350,22 @@ const useStyles = makeStyles((theme) => ({
               <Grid item md={6} xs={12} style={{margin:'auto'}}>
                 <Controller
                   control={control}
-                  name="clavesol"
+                  name="usrsunat"
                   //value={dataRegister.clavesol}
                   rules={{ required: "Campo usuario es requerido." }}
                   render={({ field }) => (
                     <TextField
                       //onChange={handleInput}
                       inputProps={{maxlength:8}}
-                      id="usuario"
+                      id="usrsunat"
                       label="Usuario SUNAT"
                       variant="outlined"
                       placeholder="Ingrese su usuario"
                       fullWidth
                       margin="dense"
                       {...field}
-                      error={Boolean(errors?.clavesol)}
-                      helperText={errors.clavesol?.message}
+                      error={Boolean(errors?.usrsunat)}
+                      helperText={errors.usrsunat?.message}
                     />
                   )}
                 />
@@ -356,7 +375,7 @@ const useStyles = makeStyles((theme) => ({
               <Grid item md={6} xs={12} style={{margin:'auto'}} >
                 <Controller
                   control={control}
-                  name="solpass"
+                  name="clavesunat"
                   //value={dataRegister.solpass}
                   rules={{ required: "Campo contraseña es requerido." }}
                   render={({ field }) => (
@@ -364,15 +383,15 @@ const useStyles = makeStyles((theme) => ({
                       //onChange={handleInput}
                       inputProps={{maxlength:12}}
                       type="password"
-                      id="pass"
+                      id="clavesunat"
                       label="Contraseña"
                       variant="outlined"
                       placeholder="Ingrese su contraseña"
                       fullWidth
                       margin="dense"
                       {...field}
-                      error={Boolean(errors?.solpass)}
-                      helperText={errors.solpass?.message}
+                      error={Boolean(errors?.clavesunat)}
+                      helperText={errors.clavesunat?.message}
                     />
                   )}
                 /><br/>
@@ -455,10 +474,168 @@ const useStyles = makeStyles((theme) => ({
       </> 
     );
   };
-  function getStepContent(step, handleInput, dataRegister) {
+
+  const IdentificacionForm = () => {
+    const {
+      control,
+      formState: { errors },
+    } = useFormContext();
+    return (
+      <>
+      <Grid container>
+        <Grid item md={12} xs={12} style={{width:"100%",margin:"auto"}}>
+          <Typography variant="h5" color="primary">
+            <strong>Identificación de usuario</strong> 
+          </Typography>
+          <Box m={0} p={1} boxShadow={0} >
+          <Grid container>
+              <Grid item md={4} xs={12} style={{margin:'auto'}}>
+                <Controller
+                  control={control}
+                  name="userLogin"
+                  //value={dataRegister.usuario}
+                  rules={{ required: "Campo DNI es requerido." }}
+                  render={({ field }) => (
+                    <TextField
+                      //onChange={handleInput}
+                      inputProps={{maxlength:8}}
+                      id="checkdni"
+                      label="DNI"
+                      variant="outlined"
+                      //value={10}
+                      placeholder="Ingresar DNI"
+                      fullWidth
+                      margin="dense"
+                      {...field}
+                      error={Boolean(errors?.userLogin)}
+                      helperText={errors.userLogin?.message}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+
+            {/*
+            <Grid container>
+              <Grid item md={4} xs={12} style={{margin:'auto'}}>
+              <Controller
+                  control={control}
+                  name="phoneCode"
+                  rules={{ 
+                    //required: "Campo celular es requerido.",
+                    pattern: {
+                      value:/^[0-9]+$/i,
+                      message: "Celular debe contener 9 dígitos"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      //onChange={handleInput}
+                      inputProps={{maxlength:9}}
+                      id="checkphone"
+                      label="Celular"
+                      variant="outlined"
+                      placeholder="Ingresar celular"
+                      margin="dense"
+                      disabled
+                      fullWidth
+                      {...field}
+                      error={Boolean(errors?.phoneCode)}
+                      helperText={errors.phoneCode?.message}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+                  */}
+
+
+          </Box>
+        </Grid>
+      </Grid>
+      </> 
+    );
+  };
+
+
+
+  const VerificacionForm = () => {
+    const {
+      control,
+      formState: { errors },
+    } = useFormContext();
+    return (
+      <>
+      <Grid container>
+        <Grid item md={12} xs={12} style={{width:"100%",margin:"auto"}}>
+          <Typography variant="h5" color="primary">
+            <strong>Verificacion de identidad</strong> 
+          </Typography>
+          <Box m={0} p={1} boxShadow={0} >
+          <Grid container>
+              <Grid item md={4} xs={12} style={{margin:'auto'}}>
+                <Controller
+                  control={control}
+                  name="userLogin"
+                  //value={dataRegister.usuario}
+                  rules={{ required: "Campo DNI es requerido." }}
+                  render={({ field }) => (
+                    <TextField
+                      //onChange={handleInput}
+                      inputProps={{maxlength:8}}
+                      id="checkdni"
+                      label="DNI"
+                      variant="outlined"
+                      placeholder="Ingresar DNI"
+                      fullWidth
+                      margin="dense"
+                      {...field}
+                      error={Boolean(errors?.userLogin)}
+                      helperText={errors.userLogin?.message}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item md={4} xs={12} style={{margin:'auto'}}>
+                <Controller
+                  control={control}
+                  name="passLogin"
+                  //value={dataRegister.pass}
+                  rules={{ required: "Campo Clave SMS es requerido." }}
+                  render={({ field }) => (
+                    <TextField
+                      //onChange={handleInput}
+                      inputProps={{maxlength:6}}
+                      type="text"
+                      id="passLogin"
+                      label="Clave SMS"
+                      variant="outlined"
+                      placeholder="Ingresar Clave SMS"
+                      fullWidth
+                      margin="dense"
+                      {...field}
+                      error={Boolean(errors?.passLogin)}
+                      helperText={errors.passLogin?.message}
+                    />
+                  )}
+                /><br></br>
+              </Grid>
+            </Grid>
+          </Box>
+        </Grid>
+      </Grid>
+      </> 
+    );
+  };
+
+  function getStepContent(step, dataRegister) {
     switch (step) {
       case 0:
-        return <DatosForm  />;
+        return <IdentificacionForm />
+      case 1:
+        return <VerificacionForm />
     {/*return (
           <Grid container>
             <Grid item md={12} xs={12} style={{width:"100%",margin:"auto"}}>
@@ -538,8 +715,9 @@ const useStyles = makeStyles((theme) => ({
             </Grid>
           </Grid>
         );*/ }
-      case 1:
-        return <SunatForm/>
+      case 2:
+        console.log("DTR ",dataRegister)
+        return <DatosForm dataRegister={dataRegister}/>;
         {/* return ( 
             <Box Box m={2} p={2} boxShadow={0}>
             <Typography variant="h6" color="primary">
@@ -565,8 +743,9 @@ const useStyles = makeStyles((theme) => ({
             </div>
             </Box>
             );*/}
-      case 2:
-        return <UsuarioForm/>
+      case 3:
+        //return <UsuarioForm/>
+        return <SunatForm/>
         {/*return (
             <Box Box m={2} p={2} boxShadow={0}>
             <Typography variant="h6" color="primary">
@@ -589,7 +768,7 @@ const useStyles = makeStyles((theme) => ({
 const Register = () => {
   const methods = useForm({
     defaultValues: {
-      nombre: "",
+      nombres: "",
       appat: "",
       apmat: "",
       dni: "",
@@ -600,10 +779,12 @@ const Register = () => {
       ruc: "",
       clavesol: "",
       solpass: "",
-      usuario: "",
-      pass:"",
+      passLogin: ""
     },
   });
+
+  const [isValidated, getIsValidated] = useState(false);
+
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -612,45 +793,93 @@ const Register = () => {
     return Boolean(Object.keys(methods.formState.errors).length)
   }
   
-  const [dataRegister, setDataRegister] = useState({
-    ruc: '',
-    clavesol: '',
-    solpass: '',
-    usuario: '',
-    pass: '',
-  });
+  const [dataRegister, setDataRegister] = useState({});
 
-  const handleInput = (event) => {
-    const { value, name } = event.target;
-      
-    setDataRegister({
-      ...dataRegister,
-      [name]: value,
+  const [dataCode, setDataCode] = useState({});
+
+  const handleCode = (data) => {
+    axios.post(`http://${api}/api/getcode`,data)
+    .then(response => {
+        console.log(response.data);
+        setOpenAlertCode(true);
+        methods.setValue("passLogin",response.data)
     });
-  };
+  }
 
-  let history = useHistory(); 
+  const handleGet = (data) => {
+    axios.post(`http://${api}/api/login`,data)
+    .then(response => {
+        console.log("Datos doctor: ",response.data);
+        if(response.data!=='Error'){
+          setDataRegister(response.data);
+          methods.setValue("nombres",response.data.APELLIDOS_NOMBRES)
+          methods.setValue("dni",response.data.DNI)
+          methods.setValue("correo",response.data.CORREO)
+          methods.setValue("telefono",response.data.TELEFONO)
+          methods.setValue("direccion",response.data.DIRECCION)
+        }else{
+          setOpenAlertLogin(true);
+        }
+    });
+  }
+
+  let history = useHistory();
 
   const steps = getSteps();
   
   const isStepOptional = (step) => {
     return step === 1;
   };
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const [openAlertCode, setOpenAlertCode] = useState(false);
+const [openAlertLogin, setOpenAlertLogin] = useState(false);
+
+const handleCloseAlertCode = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+  setOpenAlertCode(false);
+};
+const handleCloseAlertLogin = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+  setOpenAlertLogin(false);
+};
   
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
   
+
   const handleNext = (data) => {
+    
     console.log(data);
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
+
+    if(activeStep===0){
+      handleCode(data)
+    }
+    if(activeStep===1){
+      handleGet(data);
+      //methods.setValue("nombres",dataRegister?dataRegister.APELLIDOS_NOMBRES)
     }
 
-  setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    if(activeStep === steps.length - 1){
+      handleSubmit(data)
+    }
+      let newSkipped = skipped;
+        if (isStepSkipped(activeStep)) {
+          newSkipped = new Set(newSkipped.values());
+          newSkipped.delete(activeStep);
+        }
+
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+    
   };
   
   const handleBack = () => {
@@ -673,12 +902,13 @@ const Register = () => {
   };
   
   const handleReset = () => {
-    setActiveStep(0);
+    //setActiveStep(0);
+    history.push("/");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (data) => {
     //const dataLogin = '';
-    axios.post(`http://${api}/api/registrar`,dataRegister)
+    axios.post(`http://${api}/api/registrar`,data)
     .then(response => {
       //console.log(response.data);
       //localStorage.setItem("user",JSON.stringify(response.data));  
@@ -689,7 +919,7 @@ const Register = () => {
       //console.log(usuario);
       //<Home usuario={response.data} />
       console.log(dataRegister);
-        history.push("/");
+        //history.push("/");
           //<Redirect to="/Home"></Redirect>;
     });
   };
@@ -723,17 +953,18 @@ const Register = () => {
               {activeStep === steps.length ? (
                 <div>
                   <Typography className={classes.instructions}>
-                    All steps completed - you&apos;re finished
+                    Has finalizado tu registro.
                   </Typography>
                   <Button onClick={handleReset} className={classes.button} variant="contained" color="primary">
-                    Reset
+                    Iniciar sesión
                   </Button>
                 </div>
               ) : (
                 <>
                 <FormProvider {...methods}>
                   <form autoComplete="off" onSubmit={methods.handleSubmit(handleNext)}>
-                    {getStepContent(activeStep)}
+                    {getStepContent(activeStep, dataRegister)}
+                    
                     <Button
                     variant="contained"
                       className={classes.button}
@@ -742,7 +973,8 @@ const Register = () => {
                       color="primary"
                     >
                       Atrás
-                    </Button>
+                    </Button> 
+                    
                     {/*{isStepOptional(activeStep) && (
                       <Button
                         className={classes.button}
@@ -753,16 +985,34 @@ const Register = () => {
                         skip
                       </Button>
                     )}*/}
-                    {activeStep === steps.length - 1 ? 
+                    {
+                    activeStep === steps.length - 1 ? 
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleSubmit}
+                        //onClick={handleSubmit}
                         className={classes.button}
                         type="submit"
                       >
-                        Confirmar
-                      </Button> : 
+                        Registrar
+                      </Button> : activeStep === 0 ?
+                      <Button
+                      variant="contained"
+                      color="primary"
+                      //onClick={handleCode}
+                      className={classes.button}
+                      type="submit"
+                    >
+                      Clave SMS
+                    </Button> : activeStep === 1 ?
+                      <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      type="submit"
+                    >
+                      Obtener datos
+                    </Button> : 
                       <Button
                         variant="contained"
                         color="primary"
@@ -817,6 +1067,16 @@ const Register = () => {
                   </div> */}
             </div>
           </Box>
+          <Snackbar open={openAlertCode} autoHideDuration={6000} onClose={handleCloseAlertCode}>
+                        <Alert onClose={handleCloseAlertCode} severity="info">
+                            Ingrese el código SMS enviado como contraseña
+                        </Alert>
+                    </Snackbar>
+          <Snackbar open={openAlertLogin} autoHideDuration={6000} onClose={handleCloseAlertLogin}>
+              <Alert onClose={handleCloseAlertLogin} severity="error">
+                Clave SMS incorrecta
+              </Alert>
+          </Snackbar>
         </Grid>
       </Grid>
     </div>        
